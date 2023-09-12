@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-
+import { BsLinkedin, BsGithub, BsYoutube, BsInstagram } from "react-icons/bs";
 const Footer = () => {
     return (
         <>
@@ -19,7 +19,7 @@ const Footer = () => {
                             </div>
                         </div>
                         <div className="col-7">
-                            <div class="input-group">
+                            <div className="input-group">
                                 <input
                                     type="text"
                                     className="form-control py-2"
@@ -43,7 +43,36 @@ const Footer = () => {
                     <div className="row">
                         <div className="col-4">
                             <h4 className="text-white mb-4">Contact Us</h4>
-                            <div></div>
+                            <address className="text-white fs-6">
+                                Hno: 277 Near Vill chopal, <br /> Sonipat,
+                                Haryana <br /> PinCode: 131103{" "}
+                            </address>
+                            <Link
+                                href="tel:+84 988724604"
+                                className="mt-3 d-block mb-1 text-white"
+                            >
+                                +84 988724604
+                            </Link>
+                            <Link
+                                href="mailto:quanglatoi002@gmail.com"
+                                className="mt-3 d-block mb-0 text-white"
+                            >
+                                quanglatoi002@gmail.com
+                            </Link>
+                            <div className="social_icons d-flex align-items-center gap-30 mt-4">
+                                <Link className="text-white" to="/">
+                                    <BsLinkedin className="fs-4" />
+                                </Link>
+                                <Link className="text-white" to="/">
+                                    <BsInstagram className="fs-4" />
+                                </Link>
+                                <Link className="text-white" to="/">
+                                    <BsGithub className="fs-4" />
+                                </Link>
+                                <Link className="text-white" to="/">
+                                    <BsYoutube className="fs-4" />
+                                </Link>
+                            </div>
                         </div>
                         <div className="col-3">
                             <h4 className="text-white mb-4">Information</h4>
