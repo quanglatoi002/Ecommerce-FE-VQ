@@ -447,10 +447,14 @@ const Home = () => {
                                 Our Latest Blogs
                             </h3>
                         </div>
-                        <BlogCard />
-                        <BlogCard />
-                        <BlogCard />
-                        <BlogCard />
+                        <div className="row">
+                            <div className="col-3">
+                                <BlogCard />
+                                <BlogCard />
+                                <BlogCard />
+                                <BlogCard />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
