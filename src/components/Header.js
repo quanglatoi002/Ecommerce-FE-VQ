@@ -53,7 +53,7 @@ const Header = () => {
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img
-                                            src="/images/compare.svg"
+                                            src="../images/compare.svg"
                                             alt="compare"
                                         />
                                         <p className="mb-0">
@@ -67,7 +67,7 @@ const Header = () => {
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img
-                                            src="/images/wishlist.svg"
+                                            src="../images/wishlist.svg"
                                             alt="wishlist"
                                         />
                                         <p className="mb-0">
@@ -81,7 +81,7 @@ const Header = () => {
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img
-                                            src="/images/user.svg"
+                                            src="../images/user.svg"
                                             alt="user"
                                         />
                                         <p className="mb-0">
@@ -95,7 +95,7 @@ const Header = () => {
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img
-                                            src="/images/cart.svg"
+                                            src="../images/cart.svg"
                                             alt="cart"
                                         />
                                         <div className="d-flex flex-column gap-10">
@@ -126,7 +126,7 @@ const Header = () => {
                                             aria-expanded="false"
                                         >
                                             <img
-                                                src="images/menu.svg"
+                                                src="../images/menu.svg"
                                                 alt="menu"
                                             />
                                             <span className="me-5 d-inline-block">
