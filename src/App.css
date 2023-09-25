@@ -28,6 +28,10 @@
     padding: 15px;
 }
 
+.error {
+    color: red !important;
+}
+
 body {
     font-family: "Rubik", sans-serif;
 }
