@@ -37,19 +37,20 @@ const Blog = () => {
                     </div>
                     <div className="col-9">
                         <div className="row">
-                            {blogState?.map((item) => (
-                                <div key={item?._id} className="col-6 mb-3">
-                                    <BlogCard
-                                        id={item?._id}
-                                        title={item?.title}
-                                        description={item?.description}
-                                        image={item?.images[0]?.url}
-                                        date={moment(item?.created_at).format(
-                                            "MMMM Do YYYY, h:mm a"
-                                        )}
-                                    />
-                                </div>
-                            ))}
+                            {blogState &&
+                                blogState?.map((item) => (
+                                    <div key={item?._id} className="col-6 mb-3">
+                                        <BlogCard
+                                            id={item?._id}
+                                            title={item?.title}
+                                            description={item?.description}
+                                            image={item?.images[0]?.url}
+                                            date={moment(
+                                                item?.created_at
+                                            ).format("MMMM Do YYYY, h:mm a")}
+                                        />
+                                    </div>
+                                ))}
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { memo } from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link } from "react-router-dom";
 
-const SpecialProduct = () => {
+const SpecialProduct = (props) => {
+    const { title, brand, totalRatings, price, sold, quantity } = props;
+    console.log(props);
     return (
         <div className="col-6 mb-3">
             <div className="special-product-card">
@@ -15,20 +17,18 @@ const SpecialProduct = () => {
                         />
                     </div>
                     <div className="special-product-content">
-                        <h5 className="brand">Havel</h5>
-                        <h6 className="title">
-                            Samsung Galaxy Note10+ Mobile Phone; Sim...
-                        </h6>
+                        <h5 className="brand">{brand}</h5>
+                        <h6 className="title">{title}</h6>
                         <ReactStars
                             count={5}
                             size={24}
-                            value={3}
+                            value={totalRatings}
                             edit={false}
                             activeColor="#ffd700"
                         />
                         <p className="price">
-                            <span className="red-p">$100</span> &nbsp;
-                            <strike>$200</strike>
+                            <span className="red-p">$ {price}</span> &nbsp;
+                            <strike>$ {sold}</strike>
                         </p>
                         <div className="discount-till d-flex align-items-center gap-10">
                             <p>
@@ -47,15 +47,22 @@ const SpecialProduct = () => {
                             </div>
                         </div>
                         <div className="prod-count my-3">
-                            <p>Products: 5</p>
+                            <p>Products: {quantity}</p>
                             <div className="progress">
                                 <div
                                     className="progress-bar"
                                     role="progressbar"
-                                    style={{ width: "25%" }}
-                                    aria-valuenow="25"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
+                                    style={{
+                                        width:
+                                            quantity / quantity +
+                                            sold * 100 +
+                                            "%",
+                                    }}
+                                    aria-valuenow={
+                                        quantity / quantity + sold * 100
+                                    }
+                                    aria-valuemin={quantity}
+                                    aria-valuemax={sold + quantity}
                                 ></div>
                             </div>
                         </div>
@@ -67,4 +74,4 @@ const SpecialProduct = () => {
     );
 };
 
-export default SpecialProduct;
+export default memo(SpecialProduct);

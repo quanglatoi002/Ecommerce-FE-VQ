@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import BlogCard from "../components/BlogCard";
@@ -6,8 +6,23 @@ import ProductCard from "../components/ProductCard";
 import SpecialProduct from "../components/SpecialProduct";
 import { services } from "../utils/Data";
 import Container from "../components/Container";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBlogs } from "../features/blogs/blogSlice";
+import moment from "moment";
+import { getAllProducts } from "../features/products/productSlice";
 
 const Home = () => {
+    const dispatch = useDispatch();
+
+    //call API
+    useEffect(() => {
+        dispatch(getAllBlogs());
+        dispatch(getAllProducts());
+    }, [dispatch]);
+
+    const blogState = useSelector((state) => state?.blog?.blog);
+    const productState = useSelector((state) => state?.product?.products);
+    console.log(productState);
     return (
         <>
             <Container class1="home-wrapper-1 py-5">
@@ -181,10 +196,20 @@ const Home = () => {
                     <div className="col-12">
                         <h3 className="section-heading">Featured Collection</h3>
                     </div>
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
+                    {productState?.length > 0 &&
+                        productState
+                            ?.filter((i) => i?.tags === "featured")
+                            ?.map((item) => (
+                                <SpecialProduct
+                                    key={item?._id}
+                                    title={item?.title}
+                                    brand={item?.brand}
+                                    totalRatings={item?.totalRatings.toString()}
+                                    price={item?.price}
+                                    sold={item?.sold}
+                                    quantity={item?.quantity}
+                                />
+                            ))}
                 </div>
             </Container>
             <Container class1="famous-wrapper py-5 home-wrapper-2">
@@ -278,10 +303,20 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <SpecialProduct />
-                    <SpecialProduct />
-                    <SpecialProduct />
-                    <SpecialProduct />
+                    {productState?.length > 0 &&
+                        productState
+                            ?.filter((i) => i?.tags === "special")
+                            ?.map((item, index) => (
+                                <SpecialProduct
+                                    key={item?._id}
+                                    title={item?.title}
+                                    brand={item?.brand}
+                                    totalRatings={item?.totalRatings.toString()}
+                                    price={item?.price}
+                                    sold={item?.sold}
+                                    quantity={item?.quantity}
+                                />
+                            ))}
                 </div>
             </Container>
             <Container class1="popular-wrapper py-5 home-wrapper-2">
@@ -293,10 +328,12 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
+                    {productState?.length > 0 &&
+                        productState
+                            ?.filter((i) => i.tags === "popular")
+                            ?.map((item) => (
+                                <ProductCard key={item?._id} data={[item]} />
+                            ))}
                 </div>
             </Container>
             <Container class1="marque-wrapper py-5 home-wrapper-2">
@@ -363,18 +400,25 @@ const Home = () => {
                         <h3 className="section-heading">Our Latest Blogs</h3>
                     </div>
                     <div className="row">
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-3">
-                            <BlogCard />
-                        </div>
+                        {Array.isArray(blogState) &&
+                            blogState?.length > 0 &&
+                            blogState?.map((item, index) =>
+                                index < 3 ? (
+                                    <div key={item?._id} className="col-3">
+                                        <BlogCard
+                                            id={item?._id}
+                                            title={item?.title}
+                                            description={item?.description}
+                                            image={item?.images[0]?.url}
+                                            date={moment(
+                                                item?.created_at
+                                            ).format("MMMM Do YYYY, h:mm a")}
+                                        />
+                                    </div>
+                                ) : (
+                                    ""
+                                )
+                            )}
                     </div>
                 </div>
             </Container>
