@@ -208,6 +208,7 @@ const Home = () => {
                                     price={item?.price}
                                     sold={item?.sold}
                                     quantity={item?.quantity}
+                                    id={item?._id}
                                 />
                             ))}
                 </div>
@@ -315,6 +316,7 @@ const Home = () => {
                                     price={item?.price}
                                     sold={item?.sold}
                                     quantity={item?.quantity}
+                                    id={item?._id}
                                 />
                             ))}
                 </div>

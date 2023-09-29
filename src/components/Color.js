@@ -1,16 +1,21 @@
-import React from "react";
+import React, { memo } from "react";
 
-const Color = () => {
+const Color = (props) => {
+    const { colorData, setColor } = props;
     return (
         <>
             <ul className="colors ps-0">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                {colorData &&
+                    colorData?.map((item) => (
+                        <li
+                            onClick={() => setColor(item?._id)}
+                            style={{ backgroundColor: item?.title }}
+                            key={item?._id}
+                        ></li>
+                    ))}
             </ul>
         </>
     );
 };
 
-export default Color;
+export default memo(Color);

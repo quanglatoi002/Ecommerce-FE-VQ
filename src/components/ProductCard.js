@@ -1,13 +1,14 @@
 import React, { memo, useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
 import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { addToWishList } from "../features/products/productSlice";
 
 const ProductCard = (props) => {
     const { grid, data } = props;
     const dispatch = useDispatch();
     let location = useLocation();
+    const navigate = useNavigate();
 
     const addToWish = (id) => {
         dispatch(addToWishList(id));
@@ -23,7 +24,7 @@ const ProductCard = (props) => {
                             : "col-3"
                     }`}
                 >
-                    <Link
+                    <div
                         // to={`${
                         //     location.pathname === "/"
                         //         ? "product/:id"
@@ -84,7 +85,13 @@ const ProductCard = (props) => {
                                     />
                                 </button>
                                 <button className="border-0 bg-transparent">
-                                    <img src="../images/view.svg" alt="view" />
+                                    <img
+                                        onClick={() =>
+                                            navigate(`/product/${item?._id}`)
+                                        }
+                                        src="../images/view.svg"
+                                        alt="view"
+                                    />
                                 </button>
 
                                 <button className="border-0 bg-transparent">
@@ -95,7 +102,7 @@ const ProductCard = (props) => {
                                 </button>
                             </div>
                         </div>
-                    </Link>
+                    </div>
                 </div>
             ))}
         </>
