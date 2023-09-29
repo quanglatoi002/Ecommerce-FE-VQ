@@ -5,7 +5,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserCart } from "../features/user/userSlice";
+import { deleteCartProduct, getUserCart } from "../features/user/userSlice";
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -14,6 +14,14 @@ const Cart = () => {
     useEffect(() => {
         dispatch(getUserCart());
     }, [dispatch]);
+
+    const deleteACartProduct = (id) => {
+        dispatch(deleteCartProduct(id));
+        setTimeout(() => {
+            dispatch(getUserCart());
+        }, 50);
+    };
+
     return (
         <>
             <Meta title={"Cart"} />
@@ -45,9 +53,9 @@ const Cart = () => {
                                         <div className="w-75">
                                             <p>{item?.productId?.title}</p>
 
-                                            <p className="d-flex gap-3 align-items-center">
-                                                Color:
-                                                <ul className="colors ps-0 mb-0">
+                                            <div className="d-flex align-items-center mb-0 gap-2">
+                                                <p>Color:</p>
+                                                <ul className="colors ps-0">
                                                     <li
                                                         style={{
                                                             backgroundColor:
@@ -56,7 +64,7 @@ const Cart = () => {
                                                         }}
                                                     ></li>
                                                 </ul>
-                                            </p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="cart-col-2">
@@ -74,11 +82,18 @@ const Cart = () => {
                                                 min={1}
                                                 max={item?.quantity}
                                                 value={item?.quantity}
-                                                defaultValue={1}
+                                                readOnly={true}
                                             />
                                         </div>
                                         <div>
-                                            <AiFillDelete className="text-danger" />
+                                            <AiFillDelete
+                                                onClick={() =>
+                                                    deleteACartProduct(
+                                                        item?._id
+                                                    )
+                                                }
+                                                className="text-danger"
+                                            />
                                         </div>
                                     </div>
                                     <div className="cart-col-4">

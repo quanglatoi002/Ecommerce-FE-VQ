@@ -6,22 +6,35 @@ import ReactStars from "react-rating-stars-component";
 import ReactImageZoom from "react-image-zoom";
 import { TbGitCompare } from "react-icons/tb";
 import { AiOutlineHeart } from "react-icons/ai";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Color from "../components/Color";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getAProduct } from "../features/products/productSlice";
 import { toast } from "react-toastify";
-import { addProdToCart } from "../features/user/userSlice";
+import { addProdToCart, getUserCart } from "../features/user/userSlice";
 
 const SingleProduct = () => {
     const [color, setColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const [alreadyAdded, setAlreadyAdded] = useState(false);
 
     const location = useLocation();
     const getProductId = location.pathname.split("/")[2];
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const productState = useSelector((state) => state.product.product);
+    const cartState = useSelector((state) => state.auth.cartProducts);
+
+    useEffect(() => {
+        for (let i = 0; i < cartState.length; i++) {
+            if (getProductId === cartState[i].productId?._id) {
+                setAlreadyAdded(true);
+
+                navigate("/cart");
+            }
+        }
+    }, [cartState, getProductId, navigate]);
 
     const handleColorClick = useCallback((reqColor) => {
         setColor(reqColor);
@@ -29,6 +42,7 @@ const SingleProduct = () => {
 
     useEffect(() => {
         dispatch(getAProduct(getProductId));
+        dispatch(getUserCart());
     }, [dispatch, getProductId]);
 
     const uploadCart = () => {
@@ -166,44 +180,66 @@ const SingleProduct = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                                    <h3 className="product-heading">
-                                        <Color
-                                            setColor={handleColorClick}
-                                            colorData={productState?.color}
-                                        />
-                                    </h3>
-                                </div>
+                                {alreadyAdded === false && (
+                                    <>
+                                        <div className="d-flex gap-10 flex-column mt-2 mb-3">
+                                            <h3 className="product-heading">
+                                                <Color
+                                                    setColor={handleColorClick}
+                                                    colorData={
+                                                        productState?.color
+                                                    }
+                                                />
+                                            </h3>
+                                        </div>
+                                    </>
+                                )}
                                 <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
-                                    <h3 className="product-heading">
-                                        Quantity :
-                                    </h3>
-                                    <div className="">
-                                        <input
-                                            className="form-control"
-                                            min={1}
-                                            max={10}
-                                            style={{ width: "50px" }}
-                                            type="number"
-                                            name=""
-                                            id=""
-                                            onChange={(e) =>
-                                                setQuantity(e.target.value)
-                                            }
-                                            value={quantity}
-                                        />
-                                    </div>
-                                    <div className="d-flex align-items-center gap-30 ms-5">
+                                    {alreadyAdded === false && (
+                                        <>
+                                            <h3 className="product-heading">
+                                                Quantity :
+                                            </h3>
+                                            <div className="">
+                                                <input
+                                                    className="form-control"
+                                                    min={1}
+                                                    max={10}
+                                                    style={{ width: "50px" }}
+                                                    type="number"
+                                                    name=""
+                                                    id=""
+                                                    onChange={(e) =>
+                                                        setQuantity(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    value={quantity}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+                                    <div
+                                        className={`d-flex align-items-center gap-30 ${
+                                            alreadyAdded ? "ms-0" : "ms-5"
+                                        }`}
+                                    >
                                         <button
                                             className="button border-0"
                                             type="submit"
-                                            onClick={() => uploadCart()}
+                                            onClick={() => {
+                                                alreadyAdded
+                                                    ? navigate("/cart")
+                                                    : uploadCart();
+                                            }}
                                         >
-                                            Add to Cart
+                                            {alreadyAdded
+                                                ? "Go to Cart"
+                                                : "Add to Cart"}
                                         </button>
-                                        <button className="button signup">
+                                        {/* <button className="button signup">
                                             Buy It Now
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center gap-15">
