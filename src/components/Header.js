@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
+    const [totalAmount, setTotalAmount] = useState(null);
+
+    const dispatch = useDispatch();
+    const userCartState = useSelector((state) => state?.auth?.cartProducts);
+    console.log(userCartState);
+
+    useEffect(() => {
+        let sum = 0;
+        for (let index = 0; index < userCartState?.length; index++) {
+            sum =
+                sum +
+                Number(userCartState[index].quantity) *
+                    userCartState[index].price;
+
+            setTotalAmount(sum);
+        }
+    }, [userCartState]);
+
     return (
         <>
             <header className="header-top-strip py-3">
@@ -100,9 +119,13 @@ const Header = () => {
                                         />
                                         <div className="d-flex flex-column gap-10">
                                             <span className="badge bg-white text-dark">
-                                                0
+                                                {userCartState?.length
+                                                    ? userCartState?.length
+                                                    : 0}
                                             </span>
-                                            <p className="mb-0">$ 500</p>
+                                            <p className="mb-0">
+                                                ${totalAmount ? totalAmount : 0}
+                                            </p>
                                         </div>
                                     </Link>
                                 </div>

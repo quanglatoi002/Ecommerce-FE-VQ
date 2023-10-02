@@ -72,12 +72,24 @@ export const deleteCartProduct = createAsyncThunk(
     }
 );
 
+export const updateCartProduct = createAsyncThunk(
+    "user/cart/product/update",
+    async (cartDetail, thunkAPI) => {
+        try {
+            return await authService.updateProductFromCart(cartDetail);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
 const initialState = {
     user: getCustomerFromLocalStorage,
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: "",
+    cartProducts: [],
 };
 
 export const authSlice = createSlice({
@@ -187,6 +199,29 @@ export const authSlice = createSlice({
                     toast.success("Product delete successfully");
             })
             .addCase(deleteCartProduct.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (!state.isSuccess) toast.error("Something went wrong");
+            })
+            .addCase(updateCartProduct.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateCartProduct.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                const updatedProductIndex = state.cartProducts.findIndex(
+                    (product) => product._id === action.payload._id
+                );
+                if (updatedProductIndex !== -1) {
+                    state.cartProducts[updatedProductIndex] = action.payload;
+                }
+                if (state.isSuccess && updatedProductIndex !== -1)
+                    toast.success("Product update successfully");
+            })
+            .addCase(updateCartProduct.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
