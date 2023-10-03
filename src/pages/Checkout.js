@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
+import { config } from "../utils/axiosConfig";
+import { createAOrder } from "../features/user/userSlice";
 
 let shippingSchema = yup.object({
     firstName: yup.string().required("First Name is Required"),
@@ -22,7 +24,14 @@ const Checkout = () => {
     const dispatch = useDispatch();
     const [totalAmount, setTotalAmount] = useState(null);
     const [shoppingInfo, setShoppingInfo] = useState(null);
-    console.log(shoppingInfo);
+    const [isShoppingInfoSet, setIsShoppingInfoSet] = useState(false);
+
+    const [paymentInfo, setPaymentInfo] = useState({
+        razorpayPaymentId: "",
+        razorpayOrderId: "",
+    });
+    console.log(paymentInfo);
+    const [cartProductState, setCartProductState] = useState([]);
 
     const cartState = useSelector((state) => state.auth.cartProducts);
 
@@ -38,14 +47,17 @@ const Checkout = () => {
             pinCode: "",
         },
         validationSchema: shippingSchema,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             setShoppingInfo(values);
+            setTimeout(() => {
+                checkOutHandler();
+            }, 300);
         },
     });
 
     const loadScript = (src) => {
-        return new Promise((resolve, reject) => {
-            const script = document.createElement("root");
+        return new Promise((resolve) => {
+            const script = document.createElement("script");
             script.src = src;
             script.onload = () => {
                 resolve(true);
@@ -57,17 +69,95 @@ const Checkout = () => {
         });
     };
 
+    useEffect(() => {
+        let items = [];
+        for (let index = 0; index < cartState?.length; index++) {
+            items.push({
+                product: cartState[index].productId._id,
+                quantity: cartState[index].quantity,
+                color: cartState[index].color._id,
+                price: cartState[index].price,
+            });
+        }
+        setCartProductState(items);
+    }, [cartState]);
+
     const checkOutHandler = async () => {
         const res = await loadScript(
-            "https://checkout.razorpay.com/vi/checkout.js"
+            "https://checkout.razorpay.com/v1/checkout.js"
         );
         if (!res) {
-            alert("Razorpay SDK failed to load checkout");
+            alert("Razorpay SDK failed to load. Are you online?");
             return;
         }
         const result = await axios.post(
-            "http://localhost:5000/api/user/order/checkout"
+            "http://localhost:5003/api/user/order/checkout",
+            { amount: totalAmount },
+            config
         );
+        if (!result) {
+            alert("Server error. Are you online?");
+            return;
+        }
+        console.log(result);
+
+        // Getting the order details back
+        const { amount, id: order_id, currency } = result.data.order;
+        const options = {
+            key: "rzp_test_OR9hf09RIN79Vg", // Enter the Key ID generated from the Dashboard
+            amount: amount,
+            currency: currency,
+            name: "VanQuang",
+            description: "Test Transaction",
+            // image: "images/watch.jpg",
+            order_id: order_id,
+            handler: async function (response) {
+                const data = {
+                    orderCreationId: order_id,
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpayOrderId: response.razorpay_order_id,
+                    razorpaySignature: response.razorpay_signature,
+                };
+
+                const result = await axios.post(
+                    "http://localhost:5003/api/user/order/paymentVerification",
+                    data,
+                    config
+                );
+                console.log(result);
+
+                setPaymentInfo({
+                    razorpayPaymentId: result?.data?.razorpayPaymentId,
+                    razorpayOrderId: result?.data?.razorpayOrderId,
+                });
+
+                if (paymentInfo !== null) {
+                    dispatch(
+                        createAOrder({
+                            totalPrice: totalAmount,
+                            totalPriceAfterDiscount: totalAmount,
+                            cartProductState,
+                            paymentInfo,
+                            shoppingInfo,
+                        })
+                    );
+                }
+            },
+            prefill: {
+                name: "Quang",
+                email: "Quang@example.com",
+                contact: "9999999999",
+            },
+            notes: {
+                address: "Thuan An",
+            },
+            theme: {
+                color: "#61dafb",
+            },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
     };
 
     useEffect(() => {

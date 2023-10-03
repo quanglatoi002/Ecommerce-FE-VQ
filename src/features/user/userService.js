@@ -41,6 +41,15 @@ const updateProductFromCart = async (cartDetail) => {
     if (response?.data) return response.data;
 };
 
+const createOrder = async (orderDetail) => {
+    const response = await axios.post(
+        `${base_url}user/cart/create-order/`,
+        orderDetail,
+        config
+    );
+    if (response?.data) return response.data;
+};
+
 const getUserWishList = async () => {
     const response = await axios.get(`${base_url}user/wishlist`, config);
     if (response?.data) return response.data;
@@ -54,4 +63,5 @@ export const authService = {
     getCart,
     removeProductFromCart,
     updateProductFromCart,
+    createOrder,
 };
