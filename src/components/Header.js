@@ -8,7 +8,7 @@ const Header = () => {
 
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state?.auth?.cartProducts);
-    console.log(userCartState);
+    const authState = useSelector((state) => state?.auth);
 
     useEffect(() => {
         let sum = 0;
@@ -96,16 +96,28 @@ const Header = () => {
                                 </div>
                                 <div>
                                     <Link
-                                        to="/login"
+                                        to={
+                                            authState && authState.user === null
+                                                ? "/login"
+                                                : ""
+                                        }
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
                                         <img
                                             src="../images/user.svg"
                                             alt="user"
                                         />
-                                        <p className="mb-0">
-                                            Log in <br /> Account
-                                        </p>
+                                        {authState &&
+                                        authState.user === null ? (
+                                            <p className="mb-0">
+                                                Log in <br /> Account
+                                            </p>
+                                        ) : (
+                                            `Welcome ${
+                                                authState.user.firstname +
+                                                authState.user.lastname
+                                            } `
+                                        )}
                                     </Link>
                                 </div>
                                 <div>

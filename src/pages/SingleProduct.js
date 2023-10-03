@@ -27,7 +27,7 @@ const SingleProduct = () => {
     const cartState = useSelector((state) => state.auth.cartProducts);
 
     useEffect(() => {
-        for (let i = 0; i < cartState.length; i++) {
+        for (let i = 0; i < cartState?.length; i++) {
             if (getProductId === cartState[i].productId?._id) {
                 setAlreadyAdded(true);
 
@@ -116,7 +116,7 @@ const SingleProduct = () => {
                                     <ReactStars
                                         count={5}
                                         size={24}
-                                        value={productState?.totalStrings}
+                                        value={productState?.totalStrings.toString()}
                                         edit={false}
                                         activeColor="#ffd700"
                                     />
@@ -311,7 +311,7 @@ const SingleProduct = () => {
                                         <ReactStars
                                             count={5}
                                             size={24}
-                                            value={3}
+                                            value={"3"}
                                             edit={false}
                                             activeColor="#ffd700"
                                         />
@@ -341,7 +341,7 @@ const SingleProduct = () => {
                                         <ReactStars
                                             count={5}
                                             size={24}
-                                            value={3}
+                                            value={"3"}
                                             edit={true}
                                             activeColor="#ffd700"
                                         />
@@ -370,7 +370,7 @@ const SingleProduct = () => {
                                         <ReactStars
                                             count={5}
                                             size={24}
-                                            value={3}
+                                            value={"3"}
                                             edit={false}
                                             activeColor="#ffd700"
                                         />
