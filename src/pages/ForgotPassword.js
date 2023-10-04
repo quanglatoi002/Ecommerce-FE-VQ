@@ -4,8 +4,31 @@ import Meta from "../components/Meta";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import CustomInput from "../components/CustomInput";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPasswordToken } from "../features/user/userSlice";
+
+let emailSchema = yup.object({
+    email: yup
+        .string()
+        .nullable()
+        .email("Email should be valid")
+        .required("Email Address is Required"),
+});
 
 const ForgotPassword = () => {
+    const dispatch = useDispatch();
+
+    const formik = useFormik({
+        initialValues: {
+            email: "",
+        },
+        validationSchema: emailSchema,
+        onSubmit: (values) => {
+            dispatch(forgotPasswordToken(values));
+        },
+    });
     return (
         <>
             <Meta title={"Forgot Password"} />
@@ -21,14 +44,24 @@ const ForgotPassword = () => {
                                 We will send you an email to reset your password
                             </p>
                             <form
+                                onSubmit={formik.handleSubmit}
                                 action=""
                                 className="d-flex flex-column gap-15"
                             >
                                 <CustomInput
-                                    type="email"
-                                    name="name"
                                     placeholder="Email"
+                                    type="email"
+                                    name="email"
+                                    value={formik.values.email}
+                                    onChange={formik.handleChange("email")}
+                                    onBlur={formik.handleBlur("email")}
                                 />
+                                <div className="error text-center">
+                                    {formik.touched.email &&
+                                    formik.errors.email ? (
+                                        <div>{formik.errors.email}</div>
+                                    ) : null}
+                                </div>
 
                                 <div>
                                     <div className="d-flex justify-content-center flex-column gap-15 align-items-center">

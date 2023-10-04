@@ -30,7 +30,7 @@ const Checkout = () => {
         razorpayPaymentId: "",
         razorpayOrderId: "",
     });
-    console.log(paymentInfo);
+
     const [cartProductState, setCartProductState] = useState([]);
 
     const cartState = useSelector((state) => state.auth.cartProducts);
@@ -55,6 +55,7 @@ const Checkout = () => {
         },
     });
 
+    //create element for add in body
     const loadScript = (src) => {
         return new Promise((resolve) => {
             const script = document.createElement("script");
@@ -69,6 +70,7 @@ const Checkout = () => {
         });
     };
 
+    //orderItems[{}]
     useEffect(() => {
         let items = [];
         for (let index = 0; index < cartState?.length; index++) {
@@ -90,6 +92,7 @@ const Checkout = () => {
             alert("Razorpay SDK failed to load. Are you online?");
             return;
         }
+        //checkout
         const result = await axios.post(
             "http://localhost:5003/api/user/order/checkout",
             { amount: totalAmount },
@@ -99,7 +102,6 @@ const Checkout = () => {
             alert("Server error. Are you online?");
             return;
         }
-        console.log(result);
 
         // Getting the order details back
         const { amount, id: order_id, currency } = result.data.order;

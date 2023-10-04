@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
     const [totalAmount, setTotalAmount] = useState(null);
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state?.auth?.cartProducts);
@@ -21,6 +22,11 @@ const Header = () => {
             setTotalAmount(sum);
         }
     }, [userCartState]);
+
+    const handleLogout = async () => {
+        localStorage.clear();
+        window.location.reload();
+    };
 
     return (
         <>
@@ -99,7 +105,7 @@ const Header = () => {
                                         to={
                                             authState && authState.user === null
                                                 ? "/login"
-                                                : ""
+                                                : "/my-profile"
                                         }
                                         className="d-flex align-items-center gap-10 text-white"
                                     >
@@ -205,8 +211,19 @@ const Header = () => {
                                         <NavLink to="/product">
                                             Our Store
                                         </NavLink>
+                                        <NavLink to="/my-orders">
+                                            My Orders
+                                        </NavLink>
                                         <NavLink to="/blog">Blogs</NavLink>
                                         <NavLink to="/contact">Contact</NavLink>
+
+                                        <button
+                                            onClick={handleLogout}
+                                            className="border border-0 bg-transparent text-white text-uppercase"
+                                            type="button"
+                                        >
+                                            Logout
+                                        </button>
                                     </div>
                                 </div>
                             </div>

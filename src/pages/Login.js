@@ -48,9 +48,9 @@ const Login = () => {
                                 className="d-flex flex-column gap-15"
                             >
                                 <CustomInput
-                                    type="email"
-                                    name="name"
                                     placeholder="Email"
+                                    type="email"
+                                    name="email"
                                     value={formik.values.email}
                                     onChange={formik.handleChange("email")}
                                     onBlur={formik.handleBlur("email")}

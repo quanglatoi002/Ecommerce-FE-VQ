@@ -30,7 +30,7 @@ const SpecialProduct = (props) => {
                             <span className="red-p">$ {price}</span> &nbsp;
                             <strike>$ {sold}</strike>
                         </p>
-                        <div className="discount-till d-flex align-items-center gap-10">
+                        {/* <div className="discount-till d-flex align-items-center gap-10">
                             <p>
                                 <b>5 </b>days
                             </p>
@@ -45,7 +45,7 @@ const SpecialProduct = (props) => {
                                     1
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="prod-count my-3">
                             <p>Products: {quantity}</p>
                             <div className="progress">

@@ -116,7 +116,7 @@ const SingleProduct = () => {
                                     <ReactStars
                                         count={5}
                                         size={24}
-                                        value={productState?.totalStrings.toString()}
+                                        value={productState?.totalStrings?.toString()}
                                         edit={false}
                                         activeColor="#ffd700"
                                     />

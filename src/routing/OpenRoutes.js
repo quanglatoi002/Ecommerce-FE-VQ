@@ -4,7 +4,7 @@ export const OpenRoutes = ({ children }) => {
     const getTokenFromLocalStorage = JSON.parse(
         localStorage.getItem("customer")
     );
-    return getTokenFromLocalStorage.token !== undefined ? (
+    return getTokenFromLocalStorage?.token === undefined ? (
         children
     ) : (
         <Navigate to="/" relative={true} />
