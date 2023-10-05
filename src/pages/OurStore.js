@@ -10,13 +10,32 @@ import { getAllProducts } from "../features/products/productSlice";
 const OurStore = () => {
     const [grid, setGrid] = useState(4);
     const dispatch = useDispatch();
-
     //call API
+    const productState = useSelector((state) => state?.product?.products);
+    const [brands, setBrands] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [tags, setTags] = useState([]);
+
+    useEffect(() => {
+        let newBrands = [];
+        let category = [];
+        let newTags = [];
+        for (let index = 0; index < productState.length; index++) {
+            const element = productState[index];
+            newBrands.push(element.brand);
+            category.push(element.category);
+            newTags.push(element.tags);
+        }
+        // lấy các phần tử ko trùng nhau
+        setBrands([...new Set(newBrands)]);
+        setCategories([...new Set(category)]);
+        setTags([...new Set(newTags)]);
+    }, [productState]);
+
     useEffect(() => {
         dispatch(getAllProducts());
     }, [dispatch]);
 
-    const productState = useSelector((state) => state?.product?.products);
     return (
         <>
             <Meta title="Our Store" />
@@ -28,10 +47,15 @@ const OurStore = () => {
                             <h3 className="filter-title">Shop By Categories</h3>
                             <div>
                                 <ul className="ps-0">
-                                    <li>Watch</li>
-                                    <li>Tv</li>
-                                    <li>Camera</li>
-                                    <li>Laptop</li>
+                                    {brands &&
+                                        brands.map((item, index) => (
+                                            <li
+                                                onClick={() => setBrands(item)}
+                                                key={index}
+                                            >
+                                                {item}
+                                            </li>
+                                        ))}
                                 </ul>
                             </div>
                         </div>

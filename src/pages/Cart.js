@@ -19,9 +19,11 @@ const Cart = () => {
     //take api => store
     const userCartState = useSelector((state) => state.auth.cartProducts);
 
-    // call api
     useEffect(() => {
         dispatch(getUserCart());
+    }, [dispatch]);
+    // call api
+    useEffect(() => {
         // Cal Sum
         let sum = 0;
         for (let index = 0; index < userCartState?.length; index++) {

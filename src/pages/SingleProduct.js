@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { BreadCrumb } from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import ProductCard from "../components/ProductCard";
@@ -10,21 +10,31 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Color from "../components/Color";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { getAProduct } from "../features/products/productSlice";
+import {
+    addRating,
+    getAProduct,
+    getAllProducts,
+} from "../features/products/productSlice";
 import { toast } from "react-toastify";
 import { addProdToCart, getUserCart } from "../features/user/userSlice";
+import { getAllBlogs } from "../features/blogs/blogSlice";
 
 const SingleProduct = () => {
     const [color, setColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const [star, setStar] = useState(null);
+    const [comment, setComment] = useState(null);
     const [alreadyAdded, setAlreadyAdded] = useState(false);
+    const [popularProduct, setPopularProduct] = useState([]);
 
     const location = useLocation();
     const getProductId = location.pathname.split("/")[2];
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const productState = useSelector((state) => state.product.product);
-    const cartState = useSelector((state) => state.auth.cartProducts);
+
+    const productState = useSelector((state) => state?.product?.product);
+    const productsState = useSelector((state) => state?.product?.products);
+    const cartState = useSelector((state) => state.auth?.cartProducts);
 
     useEffect(() => {
         for (let i = 0; i < cartState?.length; i++) {
@@ -43,7 +53,39 @@ const SingleProduct = () => {
     useEffect(() => {
         dispatch(getAProduct(getProductId));
         dispatch(getUserCart());
+        dispatch(getAllProducts());
     }, [dispatch, getProductId]);
+
+    useEffect(() => {
+        const popularProducts =
+            productsState &&
+            productsState?.filter((element) => element?.tags === "popular");
+        setPopularProduct(popularProducts);
+    }, [productsState, dispatch, productState]);
+
+    const addRatingToProduct = useCallback(async () => {
+        if (star === null || comment === null) {
+            toast.error(
+                "Please add star rating and write a review about the product"
+            );
+            return;
+        }
+        try {
+            await dispatch(
+                addRating({
+                    star: star,
+                    comment: comment,
+                    prodId: getProductId,
+                })
+            );
+
+            await dispatch(getAProduct(getProductId));
+        } catch (error) {
+            // Xử lý lỗi nếu có
+            console.error(error);
+            toast.error("An error occurred while adding the rating");
+        }
+    }, [dispatch, star, comment, getProductId]);
 
     const uploadCart = () => {
         if (color === null) {
@@ -61,7 +103,6 @@ const SingleProduct = () => {
         }
     };
 
-    console.log(getProductId);
     const props = {
         width: 400,
         height: 600,
@@ -84,7 +125,7 @@ const SingleProduct = () => {
     return (
         <>
             <Meta title={"Product Name"} />
-            <BreadCrumb title="Product Name" />
+            <BreadCrumb title={productState?.title} />
             <Container class1="main-product-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-6">
@@ -333,57 +374,57 @@ const SingleProduct = () => {
                             </div>
                             <div className="review-form py-4">
                                 <h4>Write a Review</h4>
-                                <form
-                                    className="d-flex flex-column gap-15"
-                                    action=""
-                                >
-                                    <div>
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={"3"}
-                                            edit={true}
-                                            activeColor="#ffd700"
-                                        />
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            className="w-100 form-control"
-                                            name=""
-                                            id=""
-                                            cols={30}
-                                            rows={10}
-                                            placeholder="Comments"
-                                        ></textarea>
-                                    </div>
-                                    <div className="d-flex justify-content-end">
-                                        <button className="button border-0">
-                                            Submit Review
-                                        </button>
-                                    </div>
-                                </form>
+                                <div>
+                                    <ReactStars
+                                        count={5}
+                                        size={24}
+                                        value={"3"}
+                                        edit={true}
+                                        activeColor="#ffd700"
+                                        onChange={(e) => setStar(e)}
+                                    />
+                                </div>
+                                <div>
+                                    <textarea
+                                        className="w-100 form-control"
+                                        name=""
+                                        id=""
+                                        cols={30}
+                                        rows={10}
+                                        placeholder="Comments"
+                                        onChange={(e) =>
+                                            setComment(e.target.value)
+                                        }
+                                    ></textarea>
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                    <button
+                                        onClick={addRatingToProduct}
+                                        type="submit"
+                                        className="button border-0"
+                                    >
+                                        Submit Review
+                                    </button>
+                                </div>
                             </div>
                             <div className="reviews mt-4">
-                                <div className="review">
-                                    <div className="d-flex gap-10 align-items-center">
-                                        <h6 className="mb-0">Developer</h6>
-                                        <ReactStars
-                                            count={5}
-                                            size={24}
-                                            value={"3"}
-                                            edit={false}
-                                            activeColor="#ffd700"
-                                        />
-                                    </div>
-                                    <p className="mt-3">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit. Deleniti expedita
-                                        harum suscipit non dolorem. Culpa fugiat
-                                        inventore maiores. Ducimus, reiciendis
-                                        itaque! Adipisci quae odit modi, laborum
-                                        nihil omnis minus amet?
-                                    </p>
-                                </div>
+                                {productState &&
+                                    productState?.ratings.map((item) => (
+                                        <div key={item?._id} className="review">
+                                            <div className="d-flex gap-10 align-items-center">
+                                                <ReactStars
+                                                    count={5}
+                                                    size={24}
+                                                    value={item?.star.toString()}
+                                                    edit={false}
+                                                    activeColor="#ffd700"
+                                                />
+                                            </div>
+                                            <p className="mt-3">
+                                                {item?.comment}
+                                            </p>
+                                        </div>
+                                    ))}
                             </div>
                         </div>
                     </div>
@@ -399,7 +440,7 @@ const SingleProduct = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <ProductCard />
+                    <ProductCard data={popularProduct} />
                 </div>
             </Container>
         </>
