@@ -13,7 +13,10 @@ import {
 
 const Cart = () => {
     const dispatch = useDispatch();
-    const [productUpdateDetail, setProductUpdateDetail] = useState(null);
+    const [productUpdateDetail, setProductUpdateDetail] = useState(
+        JSON.parse(localStorage.getItem("productUpdateDetail")) || null
+    );
+    console.log(productUpdateDetail);
     const [totalAmount, setTotalAmount] = useState(null);
 
     //take api => store
@@ -37,7 +40,7 @@ const Cart = () => {
 
     // update product when quanity change
     useEffect(() => {
-        if (!productUpdateDetail !== null) {
+        if (productUpdateDetail !== null) {
             dispatch(
                 updateCartProduct({
                     cartItemId: productUpdateDetail?.cartItemId,
@@ -49,7 +52,9 @@ const Cart = () => {
 
     //handle delete A Product
     const deleteACartProduct = (id) => {
-        dispatch(deleteCartProduct(id));
+        if (id) {
+            dispatch(deleteCartProduct(id));
+        }
     };
 
     return (

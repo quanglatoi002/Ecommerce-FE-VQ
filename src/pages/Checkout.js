@@ -401,8 +401,11 @@ const Checkout = () => {
                                                 <img
                                                     className="img-fluid"
                                                     src={
-                                                        item?.productId
-                                                            ?.images[0].url
+                                                        item?.productId?.images
+                                                            ? item?.productId
+                                                                  ?.images[0]
+                                                                  ?.url
+                                                            : "../images/watch.jpg"
                                                     }
                                                     alt="product"
                                                 />

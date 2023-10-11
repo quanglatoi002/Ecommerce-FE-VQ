@@ -259,7 +259,7 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-                if (!state.isSuccess) toast.error("Something went wrong");
+                if (state.isError) toast.error("Something went wrong");
             })
             .addCase(updateCartProduct.pending, (state) => {
                 state.isLoading = true;
@@ -319,6 +319,7 @@ export const authSlice = createSlice({
             .addCase(updateProfile.pending, (state) => {
                 state.isLoading = true;
             })
+            // giữ  nguyên token là _ID user và chỉ thay tên
             .addCase(updateProfile.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isError = false;
