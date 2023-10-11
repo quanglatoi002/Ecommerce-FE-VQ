@@ -23,6 +23,7 @@ const Profile = () => {
     const userState = useSelector((state) => state.auth?.user);
     const [edit, setEdit] = useState(true);
 
+    // lúc này chỉ có hiện info user chứ
     const formik = useFormik({
         initialValues: {
             firstname: userState?.firstname,
