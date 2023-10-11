@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BreadCrumb } from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ let loginSchema = yup.object({
 });
 
 const Login = () => {
-    const authState = useSelector((state) => state.auth);
+    const authState = useSelector((state) => state?.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const formik = useFormik({
@@ -30,9 +30,14 @@ const Login = () => {
         validationSchema: loginSchema,
         onSubmit: (values) => {
             dispatch(loginUser(values));
-            navigate("/");
         },
     });
+
+    useEffect(() => {
+        if (authState.user !== null && authState.isError === false) {
+            navigate("/");
+        }
+    }, [authState, dispatch, navigate]);
     return (
         <>
             <Meta title={"Login"} />

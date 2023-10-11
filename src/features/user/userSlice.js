@@ -172,7 +172,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isError === true) {
-                    toast.error(action.error);
+                    toast.error(action.payload.response.data.message);
                 }
             })
             .addCase(loginUser.pending, (state) => {
@@ -183,7 +183,7 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.user = action.payload;
-                if (state.isSuccess === true) {
+                if (state.isSuccess) {
                     localStorage.setItem("token", action.payload.token);
                     toast.info("User Logged In Successfully");
                 }
@@ -194,7 +194,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isError === true) {
-                    toast.error(action.error);
+                    toast.error(action.payload.response.data.message);
                 }
             })
             .addCase(getUserProductWishList.pending, (state) => {
