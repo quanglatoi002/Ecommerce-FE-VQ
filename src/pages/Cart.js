@@ -16,15 +16,15 @@ const Cart = () => {
     const [productUpdateDetail, setProductUpdateDetail] = useState(
         JSON.parse(localStorage.getItem("productUpdateDetail")) || null
     );
-    console.log(productUpdateDetail);
+
     const [totalAmount, setTotalAmount] = useState(null);
 
     //take api => store
-    const userCartState = useSelector((state) => state.auth.cartProducts);
+    const userCartState = useSelector((state) => state?.auth?.cartProducts);
 
     useEffect(() => {
         dispatch(getUserCart());
-    }, [dispatch]);
+    }, [dispatch, userCartState]);
     // call api
     useEffect(() => {
         // Cal Sum

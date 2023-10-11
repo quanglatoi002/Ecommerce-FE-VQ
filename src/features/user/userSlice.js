@@ -250,7 +250,12 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                state.deleteCartProducts = action.payload;
+                const deleteProductIndex = state.cartProducts.findIndex(
+                    (product) => product._id === action.payload._id
+                );
+                if (deleteProductIndex !== -1) {
+                    state.cartProducts[deleteProductIndex] = action.payload;
+                }
                 if (state.isSuccess)
                     toast.success("Product delete successfully");
             })
@@ -259,7 +264,8 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-                if (state.isError) toast.error("Something went wrong");
+                if (state.isError && deleteCartProduct !== -1)
+                    toast.error("Something went wrong");
             })
             .addCase(updateCartProduct.pending, (state) => {
                 state.isLoading = true;
