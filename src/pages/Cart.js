@@ -21,10 +21,11 @@ const Cart = () => {
 
     //take api => store
     const userCartState = useSelector((state) => state?.auth?.cartProducts);
+    console.log(userCartState);
 
     useEffect(() => {
         dispatch(getUserCart());
-    }, [dispatch, userCartState]);
+    }, [dispatch]);
     // call api
     useEffect(() => {
         // Cal Sum

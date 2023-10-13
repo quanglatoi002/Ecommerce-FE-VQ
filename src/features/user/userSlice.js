@@ -246,16 +246,19 @@ export const authSlice = createSlice({
             .addCase(deleteCartProduct.pending, (state) => {
                 state.isLoading = true;
             })
+            //findIndex() tìm index của _id đã xóa để loại bỏ phần tử đó ra
             .addCase(deleteCartProduct.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
-                const deleteProductIndex = state.cartProducts.findIndex(
-                    (product) => product._id === action.payload._id
+                console.log(action.payload);
+                //lấy ra id của tk vừa xóa, ở phía backend mình đã lưu id của tk bị xóa vào deletedProdutId
+                const deletedProductId = action.payload.deletedProductId;
+                // sẽ lọc ra những tk có id khác với tk đã bị xóa
+                state.cartProducts = state.cartProducts.filter(
+                    (product) => product._id !== deletedProductId
                 );
-                if (deleteProductIndex !== -1) {
-                    state.cartProducts[deleteProductIndex] = action.payload;
-                }
+
                 if (state.isSuccess)
                     toast.success("Product delete successfully");
             })
@@ -264,8 +267,7 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-                if (state.isError && deleteCartProduct !== -1)
-                    toast.error("Something went wrong");
+                toast.error("Something went wrong");
             })
             .addCase(updateCartProduct.pending, (state) => {
                 state.isLoading = true;
@@ -282,6 +284,7 @@ export const authSlice = createSlice({
                 }
                 if (state.isSuccess && updatedProductIndex !== -1)
                     toast.success("Product update successfully");
+                state.isSuccess = false;
             })
             .addCase(updateCartProduct.rejected, (state, action) => {
                 state.isLoading = false;
