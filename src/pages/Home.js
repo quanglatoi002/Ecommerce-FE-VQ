@@ -404,8 +404,9 @@ const Home = () => {
                     <div className="row">
                         {Array.isArray(blogState) &&
                             blogState?.length > 0 &&
-                            blogState?.map((item, index) =>
-                                index < 3 ? (
+                            blogState
+                                ?.filter((i, index) => index < 4)
+                                .map((item) => (
                                     <div key={item?._id} className="col-3">
                                         <BlogCard
                                             id={item?._id}
@@ -417,10 +418,7 @@ const Home = () => {
                                             ).format("MMMM Do YYYY, h:mm a")}
                                         />
                                     </div>
-                                ) : (
-                                    ""
-                                )
-                            )}
+                                ))}
                     </div>
                 </div>
             </Container>
