@@ -3,28 +3,31 @@ import ReactStars from "react-rating-stars-component";
 import { Link } from "react-router-dom";
 
 const SpecialProduct = (props) => {
-    const { title, brand, totalRatings, price, sold, quantity, id } = props;
+    const { title, brand, totalRatings, price, sold, quantity, id, images } =
+        props;
     console.log(props);
     return (
-        <div className="col-6 mb-3">
+        <div className="col-6 lg:mb-3 mb-2">
             <div className="special-product-card">
-                <div className="d-flex justify-content-between">
-                    <div>
+                <div className="d-flex flex-1 flex-column lg:flex-row justify-content-between">
+                    <div className="w-100">
                         <img
-                            className="img-fluid"
-                            src="images/watch.jpg"
+                            className="response-img"
+                            src={images}
                             alt="watch"
                         />
                     </div>
-                    <div className="special-product-content">
+                    <div className="special-product-content flex-1 w-100 d-flex flex-column">
                         <h5 className="brand">{brand}</h5>
-                        <h6 className="title">{title}</h6>
+
+                        <div className="title">{title}</div>
                         <ReactStars
                             count={5}
                             size={24}
                             value={totalRatings.toString()}
                             edit={false}
                             activeColor="#ffd700"
+                            className="response-stars"
                         />
                         <p className="price">
                             <span className="red-p">$ {price}</span> &nbsp;
@@ -54,20 +57,20 @@ const SpecialProduct = (props) => {
                                     role="progressbar"
                                     style={{
                                         width:
-                                            quantity / quantity +
-                                            sold * 100 +
+                                            (sold / (quantity + sold)) * 100 +
                                             "%",
                                     }}
                                     aria-valuenow={
-                                        quantity / quantity + sold * 100
+                                        (sold / (quantity + sold)) * 100
                                     }
-                                    aria-valuemin={quantity}
-                                    aria-valuemax={sold + quantity}
+                                    aria-valuemin={0}
+                                    aria-valuemax={100}
                                 ></div>
                             </div>
                         </div>
-                        <Link to={`/product/${id}`} className="button">
-                            View
+
+                        <Link to={`/product/${id}`} className="blog-button">
+                            <span>View</span>
                         </Link>
                     </div>
                 </div>

@@ -3,7 +3,6 @@ import { base_url } from "../../utils/base_url";
 import { config } from "../../utils/axiosConfig";
 
 const getProducts = async (data) => {
-    console.log(data.brand);
     const response = await axios.get(
         `${base_url}product?${data?.brand ? `brand=${data?.brand}&&` : ""}${
             data?.tag ? `tags=${data?.tag}&&` : ""

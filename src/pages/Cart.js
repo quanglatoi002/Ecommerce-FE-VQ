@@ -113,8 +113,8 @@ const Cart = () => {
                                             <input
                                                 className="form-control"
                                                 type="number"
-                                                name=""
-                                                id=""
+                                                name={"quantity" + item?._id}
+                                                id={"cart" + item?._id}
                                                 min={1}
                                                 max={10}
                                                 value={

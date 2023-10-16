@@ -43,7 +43,7 @@ const updateProductFromCart = async (cartDetail) => {
 
 const createOrder = async (orderDetail) => {
     const response = await axios.post(
-        `${base_url}user/cart/create-order/`,
+        `${base_url}user/cart/create-order`,
         orderDetail,
         config
     );

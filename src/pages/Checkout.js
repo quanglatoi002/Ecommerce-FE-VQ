@@ -24,16 +24,10 @@ const Checkout = () => {
     const dispatch = useDispatch();
     const [totalAmount, setTotalAmount] = useState(null);
     const [shoppingInfo, setShoppingInfo] = useState(null);
-    const [isShoppingInfoSet, setIsShoppingInfoSet] = useState(false);
-
-    const [paymentInfo, setPaymentInfo] = useState({
-        razorpayPaymentId: "",
-        razorpayOrderId: "",
-    });
-
+    console.log(shoppingInfo);
     const [cartProductState, setCartProductState] = useState([]);
 
-    const cartState = useSelector((state) => state.auth.cartProducts);
+    const cartState = useSelector((state) => state?.auth?.cartProducts);
 
     const formik = useFormik({
         initialValues: {
@@ -48,10 +42,12 @@ const Checkout = () => {
         },
         validationSchema: shippingSchema,
         onSubmit: async (values) => {
-            setShoppingInfo(values);
-            setTimeout(() => {
-                checkOutHandler();
-            }, 300);
+            // sử dụng await ngay tại setShoppingInfo thì sẽ ko hiệu quả cho nên phải dùng await new Promise
+            await new Promise((resolve, reject) => {
+                setShoppingInfo(values);
+                resolve();
+            });
+            checkOutHandler();
         },
     });
 
@@ -116,9 +112,9 @@ const Checkout = () => {
             handler: async function (response) {
                 const data = {
                     orderCreationId: order_id,
-                    razorpayPaymentId: response.razorpay_payment_id,
-                    razorpayOrderId: response.razorpay_order_id,
-                    razorpaySignature: response.razorpay_signature,
+                    razorpayPaymentId: response?.razorpay_payment_id,
+                    razorpayOrderId: response?.razorpay_order_id,
+                    razorpaySignature: response?.razorpay_signature,
                 };
 
                 const result = await axios.post(
@@ -127,23 +123,16 @@ const Checkout = () => {
                     config
                 );
                 console.log(result);
-
-                setPaymentInfo({
-                    razorpayPaymentId: result?.data?.razorpayPaymentId,
-                    razorpayOrderId: result?.data?.razorpayOrderId,
-                });
-
-                if (paymentInfo !== null) {
+                if (result && result?.status === 200)
                     dispatch(
                         createAOrder({
                             totalPrice: totalAmount,
                             totalPriceAfterDiscount: totalAmount,
                             cartProductState,
-                            paymentInfo,
-                            shoppingInfo,
+                            paymentInfo: result.data,
+                            shoppingInfo: formik.values,
                         })
                     );
-                }
             },
             prefill: {
                 name: "Quang",
@@ -223,10 +212,8 @@ const Checkout = () => {
                                         className="form-control form-select"
                                         id=""
                                         name="country"
-                                        onChange={formik.handleChange(
-                                            "country"
-                                        )}
-                                        onBlur={formik.handleBlur("country")}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         value={formik.values.country}
                                     >
                                         <option value="" selected disabled>
@@ -247,10 +234,8 @@ const Checkout = () => {
                                         type="text"
                                         className="form-control"
                                         name="firstName"
-                                        onChange={formik.handleChange(
-                                            "firstName"
-                                        )}
-                                        onBlur={formik.handleBlur("firstName")}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         value={formik.values.firstName}
                                     />
                                     <div className="error ms-2 my-1">
@@ -282,10 +267,8 @@ const Checkout = () => {
                                         type="text"
                                         className="form-control"
                                         name="address"
-                                        onChange={formik.handleChange(
-                                            "address"
-                                        )}
-                                        onBlur={formik.handleBlur("address")}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         value={formik.values.address}
                                     />
                                     <div className="error ms-2 my-1">
@@ -299,8 +282,8 @@ const Checkout = () => {
                                         type="text"
                                         className="form-control"
                                         name="other"
-                                        onChange={formik.handleChange("other")}
-                                        onBlur={formik.handleBlur("other")}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         value={formik.values.other}
                                     />
                                     <div className="error ms-2 my-1">
@@ -314,8 +297,8 @@ const Checkout = () => {
                                         type="text"
                                         className="form-control"
                                         name="city"
-                                        onChange={formik.handleChange("city")}
-                                        onBlur={formik.handleBlur("city")}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         value={formik.values.city}
                                     />
                                     <div className="error ms-2 my-1">
@@ -328,8 +311,8 @@ const Checkout = () => {
                                         className="form-control form-select"
                                         id=""
                                         name="state"
-                                        onChange={formik.handleChange("state")}
-                                        onBlur={formik.handleBlur("state")}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         value={formik.values.state}
                                     >
                                         <option value="" selected disabled>
@@ -348,10 +331,8 @@ const Checkout = () => {
                                         type="text"
                                         className="form-control"
                                         name="pinCode"
-                                        onChange={formik.handleChange(
-                                            "pinCode"
-                                        )}
-                                        onBlur={formik.handleBlur("pinCode")}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         value={formik.values.pinCode}
                                     />
                                     <div className="error ms-2 my-1">

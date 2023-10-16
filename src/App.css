@@ -62,7 +62,28 @@ a {
     gap: 30px;
 }
 
+.gap-12 {
+    gap: 12.7px;
+}
+
 .button {
+    background-color: var(--color-232f3e);
+    color: white;
+    font-size: 14px;
+    padding: 13px 33px;
+    border-radius: 25px;
+    margin-top: auto;
+}
+
+.blog-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+}
+
+.blog-button span {
+    margin-top: auto;
     background-color: var(--color-232f3e);
     color: white;
     font-size: 14px;
@@ -211,6 +232,7 @@ footer .input-group-text {
 
 .small-banner {
     width: 49%;
+    height: 100%;
 }
 
 /* home 2 */
@@ -288,6 +310,8 @@ footer .input-group-text {
     font-size: 13px;
     line-height: 22px;
     color: #777777;
+    word-wrap: break-word;
+    flex-shrink: 0;
 }
 
 .single-blog-card a {
@@ -868,4 +892,78 @@ footer .input-group-text {
 .total-price {
     font-size: 16px;
     color: #777777;
+}
+
+.title {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+@media screen and (min-width: 1024px) {
+    .response-pc {
+        gap: 12.7px;
+    }
+    .response-img {
+        width: 100%;
+        height: 250px;
+        object-fit: contain;
+    }
+    .title {
+        width: 100%;
+        flex-grow: 1;
+        min-height: 25px;
+        word-break: break-all;
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    .response-pc {
+        gap: 7.2px;
+    }
+    .small-banner-content {
+        top: 0;
+        font-size: 8px;
+    }
+    .small-banner-content h4 {
+        margin-top: 5px;
+        font-size: 14px;
+        line-height: 16px;
+    }
+    .small-banner-content h5 {
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .small-banner-content p {
+        font-size: 12px;
+        line-height: 16px;
+    }
+    .main-banner-content {
+        top: 0;
+    }
+    .main-banner-content h4 {
+        margin-top: 5px;
+    }
+    .main-banner-content h5 {
+        font-size: 30px;
+        line-height: 50px;
+    }
+    .main-banner-content p {
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .response-img {
+        width: 100%;
+        height: 150px;
+        object-fit: contain;
+    }
+    .response-stars {
+        margin-top: auto;
+    }
+    .title {
+        width: 100%;
+        flex-grow: 1;
+        min-height: 50px;
+        word-break: break-all;
+    }
 }

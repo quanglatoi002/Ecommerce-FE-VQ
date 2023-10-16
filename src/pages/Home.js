@@ -16,12 +16,14 @@ const Home = () => {
 
     //call API
     useEffect(() => {
-        dispatch(getAllBlogs());
-        dispatch(getAllProducts());
+        Promise.all([dispatch(getAllProducts()), dispatch(getAllBlogs())]);
     }, [dispatch]);
 
+    const productStateA = useSelector((state) => state?.product?.products);
+    const productStates = useSelector((state) => state?.productLocal?.products);
+    const productState =
+        productStateA.length === 0 ? productStates : productStateA;
     const blogState = useSelector((state) => state?.blog?.blog);
-    const productState = useSelector((state) => state?.product?.products);
     console.log(productState);
     return (
         <>
@@ -45,7 +47,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="col-6">
-                        <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
+                        <div className="response-pc flex d-flex flex-wrap align-items-center">
                             <div className="small-banner position-relative">
                                 <img
                                     src="images/catbanner-01.jpg"
@@ -119,7 +121,9 @@ const Home = () => {
                                     <img src={item.image} alt="services" />
                                     <div>
                                         <h6>{item.title}</h6>
-                                        <p className="mb-0">{item.tagline}</p>
+                                        <p className="mb-0 lg:d-block d-none">
+                                            {item.tagline}
+                                        </p>
                                     </div>
                                 </div>
                             ))}
@@ -132,56 +136,56 @@ const Home = () => {
                     <div className="col-12">
                         <div className="categories d-flex justify-content-between flex-wrap align-items-center">
                             <div className="d-flex gap align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Music & Gaming</h6>
                                     <p>10Items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Cameras</h6>
                                     <p>10Items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Smart Tv</h6>
                                     <p>10Items</p>
                                 </div>
                                 <img src="images/tv.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Smart Watches</h6>
                                     <p>10Items</p>
                                 </div>
                                 <img src="images/headphone.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Music & Gaming</h6>
                                     <p>10Items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Cameras</h6>
                                     <p>10Items</p>
                                 </div>
                                 <img src="images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap-30 align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Smart Tv</h6>
                                     <p>10Items</p>
                                 </div>
                                 <img src="images/tv.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap-30 align-items-center">
-                                <div>
+                                <div className="lg:d-block d-none">
                                     <h6>Smart Watches</h6>
                                     <p>10Items</p>
                                 </div>
@@ -209,6 +213,7 @@ const Home = () => {
                                     sold={item?.sold}
                                     quantity={item?.quantity}
                                     id={item?._id}
+                                    images={item?.images[0].url}
                                 />
                             ))}
                 </div>
@@ -300,7 +305,7 @@ const Home = () => {
             <Container class1="special-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
-                        <h3 className="section-heading">Special Products</h3>
+                        <h3 className="section-heading">Special Product</h3>
                     </div>
                 </div>
                 <div className="row">
@@ -317,6 +322,7 @@ const Home = () => {
                                     sold={item?.sold}
                                     quantity={item?.quantity}
                                     id={item?._id}
+                                    images={item?.images[0]?.url}
                                 />
                             ))}
                 </div>
