@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
-import { createAOrder } from "../features/user/userSlice";
+import { createAOrder, deleteUserCard } from "../features/user/userSlice";
 
 let shippingSchema = yup.object({
     firstName: yup.string().required("First Name is Required"),
@@ -22,12 +22,24 @@ let shippingSchema = yup.object({
 
 const Checkout = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [totalAmount, setTotalAmount] = useState(null);
     const [shoppingInfo, setShoppingInfo] = useState(null);
     console.log(shoppingInfo);
     const [cartProductState, setCartProductState] = useState([]);
 
     const cartState = useSelector((state) => state?.auth?.cartProducts);
+    console.log(cartProductState);
+    const authState = useSelector((state) => state?.auth);
+
+    useEffect(() => {
+        if (
+            authState.orderedProduct !== null &&
+            authState.orderedProduct?.success === true
+        ) {
+            navigate("/my-orders");
+        }
+    }, [authState, navigate]);
 
     const formik = useFormik({
         initialValues: {
@@ -122,7 +134,6 @@ const Checkout = () => {
                     data,
                     config
                 );
-                console.log(result);
                 if (result && result?.status === 200)
                     dispatch(
                         createAOrder({
@@ -133,11 +144,12 @@ const Checkout = () => {
                             shoppingInfo: formik.values,
                         })
                     );
+                dispatch(deleteUserCard());
             },
             prefill: {
                 name: "Quang",
-                email: "Quang@example.com",
-                contact: "9999999999",
+                email: "quanglatoi002@gmail.com",
+                contact: "0988724604",
             },
             notes: {
                 address: "Thuan An",

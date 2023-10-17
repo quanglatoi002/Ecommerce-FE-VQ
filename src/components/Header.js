@@ -9,12 +9,14 @@ import { getAProduct } from "../features/products/productSlice";
 const Header = () => {
     const [paginate, setPaginate] = useState(true);
     const [totalAmount, setTotalAmount] = useState(null);
+    console.log(totalAmount);
     const [productOpt, setProductOpt] = useState([]);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const userCartState = useSelector((state) => state?.auth?.cartProducts);
+    console.log(userCartState);
     const authState = useSelector((state) => state?.auth);
     const productState = useSelector((state) => state?.product?.products);
 
@@ -22,6 +24,7 @@ const Header = () => {
 
     useEffect(() => {
         let sum = 0;
+        if (userCartState?.length === 0) setTotalAmount(sum);
         for (let index = 0; index < userCartState?.length; index++) {
             sum =
                 sum +

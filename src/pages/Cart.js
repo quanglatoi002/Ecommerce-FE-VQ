@@ -30,6 +30,7 @@ const Cart = () => {
     useEffect(() => {
         // Cal Sum
         let sum = 0;
+        if (userCartState?.length === 0) setTotalAmount(sum);
         for (let index = 0; index < userCartState?.length; index++) {
             sum =
                 sum +

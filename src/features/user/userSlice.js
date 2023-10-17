@@ -138,6 +138,17 @@ export const resetPassword = createAsyncThunk(
     }
 );
 
+export const deleteUserCard = createAsyncThunk(
+    "user/cart/delete",
+    async (thunkAPI) => {
+        try {
+            return await authService.emptyCart();
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
 const initialState = {
     user: getCustomerFromLocalStorage,
     isError: false,
@@ -394,6 +405,21 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (!state.isSuccess) toast.error("Something went wrong");
+            })
+            .addCase(deleteUserCard.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteUserCard.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.deletedCart = action.payload;
+            })
+            .addCase(deleteUserCard.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
             });
     },
 });

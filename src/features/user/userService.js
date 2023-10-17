@@ -85,6 +85,11 @@ const getUserWishList = async () => {
     if (response?.data) return response.data;
 };
 
+const emptyCart = async () => {
+    const response = await axios.delete(`${base_url}user/empty-cart`, config);
+    if (response?.data) return response.data;
+};
+
 export const authService = {
     register,
     login,
@@ -98,4 +103,5 @@ export const authService = {
     updateUser,
     forgotPassToken,
     resetPassword,
+    emptyCart,
 };

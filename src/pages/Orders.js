@@ -10,6 +10,8 @@ const Orders = () => {
         (state) => state.auth?.getOrderedProduct?.orders
     );
 
+    console.log(orderState);
+
     useEffect(() => {
         dispatch(getOrders());
     }, [dispatch]);
