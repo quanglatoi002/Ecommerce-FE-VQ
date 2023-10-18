@@ -7,7 +7,11 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
-import { createAOrder, deleteUserCard } from "../features/user/userSlice";
+import {
+    createAOrder,
+    deleteUserCard,
+    resetState,
+} from "../features/user/userSlice";
 
 let shippingSchema = yup.object({
     firstName: yup.string().required("First Name is Required"),
@@ -134,7 +138,7 @@ const Checkout = () => {
                     data,
                     config
                 );
-                if (result && result?.status === 200)
+                if (result && result?.status === 200) {
                     dispatch(
                         createAOrder({
                             totalPrice: totalAmount,
@@ -144,7 +148,9 @@ const Checkout = () => {
                             shoppingInfo: formik.values,
                         })
                     );
-                dispatch(deleteUserCard());
+                    dispatch(deleteUserCard());
+                    dispatch(resetState());
+                }
             },
             prefill: {
                 name: "Quang",

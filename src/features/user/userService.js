@@ -1,14 +1,17 @@
 import axios from "axios";
 import { base_url } from "../../utils/base_url";
 import { config } from "../../utils/axiosConfig";
+import { TbRuler2 } from "react-icons/tb";
+
+const axiosJWT = axios.create();
 
 const register = async (userData) => {
     const response = await axios.post(`${base_url}user/register`, userData);
-    if (response.data) return response.data;
+    if (response?.data) return response.data;
 };
 
 const login = async (userData) => {
-    const response = await axios.post(`${base_url}user/login`, userData);
+    const response = await axiosJWT.post(`${base_url}user/login`, userData);
     if (response?.data) {
         localStorage.setItem("customer", JSON.stringify(response.data));
     }
@@ -90,6 +93,14 @@ const emptyCart = async () => {
     if (response?.data) return response.data;
 };
 
+const refreshToken = async () => {
+    const response = await axios.get(`${base_url}user/refresh`, {
+        withCredentials: true,
+        credentials: "include",
+    });
+    if (response?.data) return response.data;
+};
+
 export const authService = {
     register,
     login,
@@ -104,4 +115,6 @@ export const authService = {
     forgotPassToken,
     resetPassword,
     emptyCart,
+    refreshToken,
+    axiosJWT,
 };

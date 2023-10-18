@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import { authService } from "./userService";
 import { toast } from "react-toastify";
 
@@ -148,6 +148,19 @@ export const deleteUserCard = createAsyncThunk(
         }
     }
 );
+
+export const getRefreshToken = createAsyncThunk(
+    "user/refreshToken/get",
+    async (thunkAPI) => {
+        try {
+            return await authService.refreshToken();
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
+export const resetState = createAction("Reset_all");
 
 const initialState = {
     user: getCustomerFromLocalStorage,
@@ -312,7 +325,8 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.orderedProduct = action.payload;
-                if (state.isSuccess) toast.success("Ordered successfully");
+                if (state.isSuccess)
+                    toast.success("Ordered created successfully");
             })
             .addCase(createAOrder.rejected, (state, action) => {
                 state.isLoading = false;
@@ -416,6 +430,21 @@ export const authSlice = createSlice({
                 state.deletedCart = action.payload;
             })
             .addCase(deleteUserCard.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
+            .addCase(getRefreshToken.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getRefreshToken.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.refreshToken = action.payload;
+            })
+            .addCase(getRefreshToken.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;

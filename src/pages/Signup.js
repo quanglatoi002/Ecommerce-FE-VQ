@@ -34,8 +34,12 @@ const Signup = () => {
             password: "",
         },
         validationSchema: signUpSchema,
-        onSubmit: (values) => {
-            dispatch(registerUser(values));
+        onSubmit: async (values) => {
+            try {
+                await dispatch(registerUser(values));
+            } catch (error) {
+                console.error(error);
+            }
         },
     });
 

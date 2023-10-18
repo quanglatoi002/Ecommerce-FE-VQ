@@ -24,7 +24,7 @@ const SpecialProduct = (props) => {
                         <ReactStars
                             count={5}
                             size={24}
-                            value={totalRatings.toString()}
+                            value={+totalRatings}
                             edit={false}
                             activeColor="#ffd700"
                             className="response-stars"

@@ -3,28 +3,49 @@ import authReducer from "../features/user/userSlice";
 import productReducer from "../features/products/productSlice";
 import blogReducer from "../features/blogs/blogSlice";
 import contactReducer from "../features/contact/contactSlice";
-import { persistReducer, persistStore } from "redux-persist";
+import {
+    persistReducer,
+    persistStore,
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const productsPersistConfig = {
+const commonConfig = {
     key: "products",
     storage: storage,
-    whitelist: ["products"], // Chỉ lưu trữ trường products
 };
 
-const persistedProductsReducer = persistReducer(
-    productsPersistConfig,
-    productReducer
-);
+const persistedProductsReducer = {
+    ...commonConfig,
+    whitelist: ["products"],
+};
 
 export const store = configureStore({
     reducer: {
         productLocal: persistedProductsReducer,
         auth: authReducer,
-        product: productReducer,
+        product: persistReducer(persistedProductsReducer, productReducer),
         blog: blogReducer,
         contact: contactReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [
+                    FLUSH,
+                    REHYDRATE,
+                    PAUSE,
+                    PERSIST,
+                    PURGE,
+                    REGISTER,
+                ],
+            },
+        }),
 });
 
 export const persistor = persistStore(store);
