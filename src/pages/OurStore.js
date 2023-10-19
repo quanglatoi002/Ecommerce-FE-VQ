@@ -8,7 +8,6 @@ import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/products/productSlice";
 const OurStore = () => {
-    const [grid, setGrid] = useState(4);
     const dispatch = useDispatch();
     //call API
     const productState = useSelector((state) => state?.product?.products);
@@ -25,8 +24,22 @@ const OurStore = () => {
     const [minPrice, setMinPrice] = useState(null);
     const [maxPrice, setMaxPrice] = useState(null);
     const [sort, setSort] = useState(null);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [grid, setGrid] = useState(windowWidth && windowWidth < 768 ? 12 : 3);
+    console.log(grid);
+    console.log(windowWidth);
+    useEffect(() => {
+        const updateWindowWidth = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        // Gắn sự kiện lắng nghe sự thay đổi kích thước màn hình
+        window.addEventListener("resize", updateWindowWidth);
+        // Gỡ bỏ sự kiện khi component bị hủy
+        return () => {
+            window.removeEventListener("resize", updateWindowWidth);
+        };
+    }, []); // Chỉ chạy một lần sau khi component được render
 
-    console.log(brand);
     useEffect(() => {
         let newBrands = [];
         let category = [];
@@ -56,7 +69,7 @@ const OurStore = () => {
         <>
             <Meta title="Our Store" />
             <BreadCrumb title="Our Store" />
-            <Container class1="store-wrapper home-wrapper-2 py-5">
+            <Container class1="store-wrapper home-wrapper-2 py-lg-5 py-3">
                 <div className="row">
                     <div className="col-3">
                         <div className="filter-card mb-3">
@@ -78,10 +91,9 @@ const OurStore = () => {
                             </div>
                         </div>
                         <div className="filter-card mb-3">
-                            <h3 className="filter-title">Filter By</h3>
                             <div>
                                 <h5 className="sub-title">Price</h5>
-                                <div className="d-flex align-items-center gap-10">
+                                <div className="d-flex align-items-center gap-lg-10 gap-8 response-mobile-price">
                                     <div className="form-floating">
                                         <input
                                             type="number"
@@ -112,7 +124,7 @@ const OurStore = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="filter-card mb-3">
+                            <div className="response-tags">
                                 <h3 className="sub-title">Product Tags</h3>
                                 <div>
                                     <div className="product-tags d-flex flex-wrap align-items-center gap-10">
@@ -130,7 +142,7 @@ const OurStore = () => {
                                 </div>
                             </div>
 
-                            <div className=" mt-4 mb-3">
+                            <div className="response-tags">
                                 <h3 className="sub-title">Product Brands</h3>
                                 <div>
                                     <div className="product-tags d-flex flex-wrap align-items-center gap-10">
@@ -206,7 +218,7 @@ const OurStore = () => {
                     <div className="col-9">
                         <div className="filter-sort-grid mb-4">
                             <div className="d-flex justify-content-between align-items-center">
-                                <div className="d-flex align-items-center gap-10">
+                                <div className="d-flex align-items-center response-sort">
                                     <p className="mb-0 w-100">Sort By:</p>
                                     <select
                                         name=""
@@ -237,7 +249,7 @@ const OurStore = () => {
                                     </select>
                                 </div>
                                 <div className="d-flex align-items-center gap-10 grid">
-                                    <p className="total-products mb-0">
+                                    <p className="total-products mb-0 d-lg-flex d-none">
                                         21 Products
                                     </p>
                                     <div className="d-flex gap-10 align-items-center">
@@ -266,20 +278,31 @@ const OurStore = () => {
                                             alt="grid"
                                         />
 
-                                        <img
-                                            onClick={() => {
-                                                setGrid(12);
-                                            }}
-                                            className="d-block img-fluid"
-                                            src="images/gr.svg"
-                                            alt="grid"
-                                        />
+                                        {grid === 12 ? (
+                                            <img
+                                                onClick={() => {
+                                                    setGrid(12);
+                                                }}
+                                                className="d-block img-fluid"
+                                                src="images/gr.svg"
+                                                alt="grid"
+                                            />
+                                        ) : (
+                                            <img
+                                                onClick={() => {
+                                                    setGrid(12);
+                                                }}
+                                                className="d-block img-fluid"
+                                                src="images/gr.svg"
+                                                alt="grid"
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="products-list pb-5">
-                            <div className="d-flex gap-10 flex-wrap">
+                            <div className="d-flex gap-lg-10 flex-wrap gap-12">
                                 <ProductCard
                                     data={productState ? productState : []}
                                     grid={grid}

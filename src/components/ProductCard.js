@@ -24,14 +24,7 @@ const ProductCard = (props) => {
                             : "col-3"
                     }`}
                 >
-                    <div
-                        // to={`${
-                        //     location.pathname === "/"
-                        //         ? "product/:id"
-                        //         : `${location.pathname}/:id`
-                        // }`}
-                        className="product-card position-relative"
-                    >
+                    <div className="product-card position-relative">
                         <div className="wishlist-icon position-absolute">
                             <button
                                 onClick={(e) => {
@@ -44,8 +37,12 @@ const ProductCard = (props) => {
                         </div>
                         <div className="product-image">
                             <img
-                                className="img-fluid mx-auto"
-                                src={item?.images[0].url}
+                                className="response-img"
+                                src={
+                                    item?.images[0].url
+                                        ? item?.images[0].url
+                                        : "../images/watch.jpg"
+                                }
                                 alt="product images"
                                 width={160}
                             />
@@ -58,7 +55,7 @@ const ProductCard = (props) => {
 
                         <div className="product-details">
                             <h6 className="brand">{item?.brand}</h6>
-                            <h5 className="product-title">{item?.title}</h5>
+                            <h5 className="title">{item?.title}</h5>
                             <ReactStars
                                 count={5}
                                 size={24}
@@ -78,12 +75,12 @@ const ProductCard = (props) => {
                         </div>
                         <div className="action-bar position-absolute">
                             <div className="d-flex flex-column gap-15">
-                                {/* <button className="border-0 bg-transparent">
+                                <button className="border-0 bg-transparent">
                                     <img
                                         src="../images/prodcompare.svg"
                                         alt="prodcompare"
                                     />
-                                </button> */}
+                                </button>
                                 <button className="border-0 bg-transparent">
                                     <img
                                         onClick={() =>

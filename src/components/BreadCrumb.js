@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const BreadCrumb = (props) => {
     const { title } = props;
     return (
-        <div className="breadcrumb py-4">
+        <div className="breadcrumb py-md-4 py-3 mb-0">
             <div className="container-xxl">
                 <div className="row">
                     <div className="col-12 ">

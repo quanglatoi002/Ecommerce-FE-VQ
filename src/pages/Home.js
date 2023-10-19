@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs } from "../features/blogs/blogSlice";
 import moment from "moment";
 import { getAllProducts } from "../features/products/productSlice";
+import HomeInfo from "../components/HomeInfo";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const Home = () => {
         <>
             <Container class1="home-wrapper-1 py-5">
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-lg-6 col-12 ">
                         <div className="main-banner position-relative">
                             <img
                                 src="images/main-banner-1.jpg"
@@ -42,11 +43,13 @@ const Home = () => {
                                 <p>
                                     From $999.00 <br /> or $41.62/mo.
                                 </p>
-                                <Link className="button">BUY NOW</Link>
+                                <Link className="button">
+                                    <span>BUY NOW</span>
+                                </Link>
                             </div>
                         </div>
                     </div>
-                    <div className="col-6">
+                    <div className="col-lg-6 col-12">
                         <div className="response-pc flex d-flex flex-wrap align-items-center">
                             <div className="small-banner position-relative">
                                 <img
@@ -109,7 +112,7 @@ const Home = () => {
                     </div>
                 </div>
             </Container>
-            <Container class1="home-wrapper-2 py-5">
+            <Container class1="home-wrapper-2 lg:py-5 py-4">
                 <div className="row">
                     <div className="col-12">
                         <div className="services d-flex align-items-center justify-content-between">
@@ -119,7 +122,7 @@ const Home = () => {
                                     className="d-flex align-items-center gap-15"
                                 >
                                     <img src={item.image} alt="services" />
-                                    <div>
+                                    <div className="response-mobile-contact">
                                         <h6>{item.title}</h6>
                                         <p className="mb-0 lg:d-block d-none">
                                             {item.tagline}
@@ -131,71 +134,8 @@ const Home = () => {
                     </div>
                 </div>
             </Container>
-            <Container class1="home-wrapper-2 py-5">
-                <div className="row">
-                    <div className="col-12">
-                        <div className="categories d-flex justify-content-between flex-wrap align-items-center">
-                            <div className="d-flex gap align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Music & Gaming</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/camera.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex gap align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Cameras</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/camera.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex gap align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Smart Tv</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/tv.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex gap align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Smart Watches</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/headphone.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex gap align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Music & Gaming</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/camera.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex gap align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Cameras</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/camera.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex gap-30 align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Smart Tv</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/tv.jpg" alt="camera" />
-                            </div>
-                            <div className="d-flex gap-30 align-items-center">
-                                <div className="lg:d-block d-none">
-                                    <h6>Smart Watches</h6>
-                                    <p>10Items</p>
-                                </div>
-                                <img src="images/headphone.jpg" alt="camera" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Container>
-            <Container class1="featured-wrapper py-5 home-wrapper-2">
+            <HomeInfo />
+            <Container class1="featured-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <h3 className="section-heading">Featured Collection</h3>
@@ -218,17 +158,17 @@ const Home = () => {
                             ))}
                 </div>
             </Container>
-            <Container class1="famous-wrapper py-5 home-wrapper-2">
+            <Container class1="famous-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-md-3 col-12 response-3">
                         <div
-                            className="famous-card 
+                            className="famous-card
                              position-relative"
                         >
                             <img
                                 src="images/famous-2.jpeg"
                                 alt="famous"
-                                className="img-fluid"
+                                className="img-fluid img-famous"
                             />
                             <div className="famous-content position-absolute">
                                 <h5>Big Screen</h5>
@@ -237,7 +177,7 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3 response-mobile-screen">
                         <div
                             className="famous-card 
                              position-relative"
@@ -258,7 +198,7 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3 response-mobile-screen">
                         <div
                             className="famous-card 
                              position-relative"
@@ -279,7 +219,7 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3 response-mobile-screen">
                         <div
                             className="famous-card 
                              position-relative"
@@ -302,7 +242,7 @@ const Home = () => {
                     </div>
                 </div>
             </Container>
-            <Container class1="special-wrapper py-5 home-wrapper-2">
+            <Container class1="special-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <h3 className="section-heading">Special Product</h3>
@@ -327,7 +267,7 @@ const Home = () => {
                             ))}
                 </div>
             </Container>
-            <Container class1="popular-wrapper py-5 home-wrapper-2">
+            <Container class1="popular-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <h3 className="section-heading">
@@ -344,7 +284,7 @@ const Home = () => {
                             ))}
                 </div>
             </Container>
-            <Container class1="marque-wrapper py-5 home-wrapper-2">
+            <Container class1="marque-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <div className="marquee-inner-wrapper card-wrapper">
@@ -402,7 +342,7 @@ const Home = () => {
                     </div>
                 </div>
             </Container>
-            <Container class1="blog-wrapper py-5 home-wrapper-2">
+            <Container class1="blog-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
                         <h3 className="section-heading">Our Latest Blogs</h3>

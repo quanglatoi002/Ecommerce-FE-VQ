@@ -69,9 +69,11 @@ const Header = () => {
             <header className="header-upper py-3">
                 <div className="container-xxl">
                     <div className="row align-items-center">
-                        <div className="col-2">
+                        <div className="response-mobile col-2">
                             <h2>
-                                <Link className="text-white">Developer</Link>
+                                <Link to={"/"} className="text-white">
+                                    Developer
+                                </Link>
                             </h2>
                         </div>
                         <div className="col-5">
@@ -191,7 +193,7 @@ const Header = () => {
                         <div className="col-12">
                             <div className="menu-bottom d-flex align-items-center gap-30">
                                 <div>
-                                    <div className="dropdown">
+                                    <div className="response-mobile-navbar dropdown">
                                         <button
                                             className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 d-flex align-items-center"
                                             type="button"
@@ -238,7 +240,7 @@ const Header = () => {
                                         </ul>
                                     </div>
                                 </div>
-                                <div className="menu-links">
+                                <div className="response-mobile-navbar2  menu-links">
                                     <div className="d-flex align-items-center gap-15">
                                         <NavLink to="/">Home</NavLink>
                                         <NavLink to="/product">

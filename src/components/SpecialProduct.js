@@ -7,20 +7,20 @@ const SpecialProduct = (props) => {
         props;
     console.log(props);
     return (
-        <div className="col-6 lg:mb-3 mb-2">
+        <div className="col-6 d-flex lg:mb-3 mb-2">
             <div className="special-product-card">
                 <div className="d-flex flex-1 flex-column lg:flex-row justify-content-between">
-                    <div className="w-100">
+                    <div className="special-product-img">
                         <img
                             className="response-img"
                             src={images}
                             alt="watch"
                         />
                     </div>
-                    <div className="special-product-content flex-1 w-100 d-flex flex-column">
+                    <div className="special-product-content">
                         <h5 className="brand">{brand}</h5>
 
-                        <div className="title">{title}</div>
+                        <h6 className="title">{title}</h6>
                         <ReactStars
                             count={5}
                             size={24}
