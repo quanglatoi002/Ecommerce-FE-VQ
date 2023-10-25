@@ -12,28 +12,31 @@ const HomeInfo = () => {
                                     <h6>Music & Gaming</h6>
                                     <p>10Items</p>
                                 </div>
-                                <img src="images/camera.jpg" alt="camera" />
+                                <img
+                                    src="../images/headphone.jpg"
+                                    alt="headphone"
+                                />
                             </div>
                             <div className="d-flex gap align-items-center">
                                 <div className="lg:d-block d-none">
                                     <h6>Cameras</h6>
                                     <p>10Items</p>
                                 </div>
-                                <img src="images/camera.jpg" alt="camera" />
+                                <img src="../images/camera.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
                                 <div className="lg:d-block d-none">
                                     <h6>Smart Tv</h6>
                                     <p>10Items</p>
                                 </div>
-                                <img src="images/tv.jpg" alt="camera" />
+                                <img src="../images/tv.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
                                 <div className="lg:d-block d-none">
                                     <h6>Smart Watches</h6>
                                     <p>10Items</p>
                                 </div>
-                                <img src="images/headphone.jpg" alt="camera" />
+                                <img src="images/acc.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap align-items-center">
                                 <div className="lg:d-block d-none">
@@ -44,24 +47,27 @@ const HomeInfo = () => {
                             </div>
                             <div className="d-flex gap align-items-center">
                                 <div className="lg:d-block d-none">
-                                    <h6>Cameras</h6>
+                                    <h6>HomeApp</h6>
                                     <p>10Items</p>
                                 </div>
-                                <img src="images/camera.jpg" alt="camera" />
+                                <img
+                                    src="../images/homeapp.jpg"
+                                    alt="homeapp"
+                                />
                             </div>
                             <div className="d-flex gap-30 align-items-center">
                                 <div className="lg:d-block d-none">
-                                    <h6>Smart Tv</h6>
+                                    <h6>Speaker</h6>
                                     <p>10Items</p>
                                 </div>
-                                <img src="images/tv.jpg" alt="camera" />
+                                <img src="../images/speaker.jpg" alt="camera" />
                             </div>
                             <div className="d-flex gap-30 align-items-center">
                                 <div className="lg:d-block d-none">
-                                    <h6>Smart Watches</h6>
+                                    <h6>Laptop</h6>
                                     <p>10Items</p>
                                 </div>
-                                <img src="images/headphone.jpg" alt="camera" />
+                                <img src="images/laptop.jpg" alt="camera" />
                             </div>
                         </div>
                     </div>
