@@ -12,6 +12,7 @@ const Header = () => {
     console.log(totalAmount);
     const [productOpt, setProductOpt] = useState([]);
 
+    console.log(productOpt);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -23,15 +24,14 @@ const Header = () => {
     // const options = productOpt(0, 1000).map((o) => `Item ${o}`);
 
     useEffect(() => {
-        let sum = 0;
-        if (userCartState?.length === 0) setTotalAmount(sum);
-        for (let index = 0; index < userCartState?.length; index++) {
-            sum =
-                sum +
-                Number(userCartState[index].quantity) *
-                    userCartState[index].price;
-
-            setTotalAmount(sum);
+        if (userCartState?.length === 0) {
+            setTotalAmount(0);
+        } else {
+            const totalAmount = userCartState?.reduce((accumulator, item) => {
+                const itemTotal = Number(item.quantity) * item.price;
+                return accumulator + itemTotal;
+            }, 0);
+            setTotalAmount(totalAmount);
         }
     }, [userCartState]);
 

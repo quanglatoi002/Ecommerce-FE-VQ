@@ -27,6 +27,7 @@ import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
+import { LRUCacheProvider } from "./components/lruCacheContext";
 import { authService, axiosJWT } from "./features/user/userService";
 import { getRefreshToken } from "./features/user/userSlice";
 
@@ -74,7 +75,16 @@ function App() {
                         <Route path="product" element={<OurStore />} />
                         <Route path="product/:id" element={<SingleProduct />} />
                         <Route path="blog" element={<Blog />} />
-                        <Route path="blog/:id" element={<SingleBlog />} />
+
+                        <Route
+                            path="blog/:id"
+                            element={
+                                <LRUCacheProvider>
+                                    <SingleBlog />
+                                </LRUCacheProvider>
+                            }
+                        />
+
                         <Route
                             path="cart"
                             element={

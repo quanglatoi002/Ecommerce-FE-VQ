@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/user/userSlice";
 import productReducer from "../features/products/productSlice";
 import blogReducer from "../features/blogs/blogSlice";
+import lruSlice from "../features/LRUCache/lruSlice";
 import contactReducer from "../features/contact/contactSlice";
 import {
     persistReducer,
@@ -27,6 +28,7 @@ const persistedProductsReducer = {
 
 export const store = configureStore({
     reducer: {
+        lruCache: lruSlice,
         productLocal: persistedProductsReducer,
         auth: authReducer,
         product: persistReducer(persistedProductsReducer, productReducer),

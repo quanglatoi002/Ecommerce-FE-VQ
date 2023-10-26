@@ -29,7 +29,6 @@ const Checkout = () => {
     const navigate = useNavigate();
     const [totalAmount, setTotalAmount] = useState(null);
     const [shoppingInfo, setShoppingInfo] = useState(null);
-    console.log(shoppingInfo);
     const [cartProductState, setCartProductState] = useState([]);
 
     const cartState = useSelector((state) => state?.auth?.cartProducts);
@@ -58,6 +57,7 @@ const Checkout = () => {
         },
         validationSchema: shippingSchema,
         onSubmit: async (values) => {
+            console.log(values);
             // sử dụng await ngay tại setShoppingInfo thì sẽ ko hiệu quả cho nên phải dùng await new Promise
             await new Promise((resolve, reject) => {
                 setShoppingInfo(values);

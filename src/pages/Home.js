@@ -49,11 +49,13 @@ const Home = () => {
             <Container class1="home-wrapper-1 py-5">
                 <div className="row">
                     <div className="col-lg-6 col-12">
-                        <ul>
-                            {notifications?.map((notification, index) => (
-                                <li key={index}>{notification}</li>
-                            ))}
-                        </ul>
+                        {notifications.length > 0 && (
+                            <ul>
+                                {notifications?.map((notification, index) => (
+                                    <li key={index}>{notification}</li>
+                                ))}
+                            </ul>
+                        )}
                         <div className="main-banner position-relative">
                             <img
                                 src="images/main-banner-1.jpg"

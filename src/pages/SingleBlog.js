@@ -6,6 +6,7 @@ import { HiOutlineArrowLeft } from "react-icons/hi";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getABlog } from "../features/blogs/blogSlice";
+import { getCache, setCache } from "../features/LRUCache/lruSlice";
 
 const SingleBlog = () => {
     const dispatch = useDispatch();
@@ -13,10 +14,29 @@ const SingleBlog = () => {
     const getBlogId = location.pathname.split("/")[2];
     //call API
     useEffect(() => {
-        dispatch(getABlog(getBlogId));
+        const fetchData = async () => {
+            try {
+                // Kiểm tra cache trước
+                const cachedData = await dispatch(getCache({ key: getBlogId }));
+                if (cachedData) {
+                    console.log("Data from cache:", cachedData);
+                } else {
+                    //    Nếu không có trong cache, gọi API và lưu vào cache
+                    const data = await dispatch(getABlog(getBlogId));
+                    console.log(data);
+                    // Lưu dữ liệu vào cache
+                    dispatch(setCache({ key: getBlogId, value: data }));
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
     }, [dispatch, getBlogId]);
 
     const blogState = useSelector((state) => state?.blog?.singleBlog?.getBlog);
+
     return (
         <>
             <Meta title={blogState?.title} />
