@@ -76,14 +76,7 @@ function App() {
                         <Route path="product/:id" element={<SingleProduct />} />
                         <Route path="blog" element={<Blog />} />
 
-                        <Route
-                            path="blog/:id"
-                            element={
-                                <LRUCacheProvider>
-                                    <SingleBlog />
-                                </LRUCacheProvider>
-                            }
-                        />
+                        <Route path="blog/:id" element={<SingleBlog />} />
 
                         <Route
                             path="cart"

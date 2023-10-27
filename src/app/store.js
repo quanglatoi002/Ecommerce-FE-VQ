@@ -29,7 +29,6 @@ const persistedProductsReducer = {
 export const store = configureStore({
     reducer: {
         lruCache: lruSlice,
-        productLocal: persistedProductsReducer,
         auth: authReducer,
         product: persistReducer(persistedProductsReducer, productReducer),
         blog: blogReducer,

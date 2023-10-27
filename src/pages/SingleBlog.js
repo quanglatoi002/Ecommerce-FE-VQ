@@ -6,24 +6,27 @@ import { HiOutlineArrowLeft } from "react-icons/hi";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getABlog } from "../features/blogs/blogSlice";
-import { getCache, setCache } from "../features/LRUCache/lruSlice";
+import { fetchCache, setCache } from "../features/LRUCache/lruSlice";
 
 const SingleBlog = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const getBlogId = location.pathname.split("/")[2];
+    console.log(getBlogId);
+    const blogState = useSelector((state) => state?.lruCache?.payload?.getBlog);
+
     //call API
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // Kiểm tra cache trước
-                const cachedData = await dispatch(getCache({ key: getBlogId }));
-                if (cachedData) {
+                const cachedData = await dispatch(fetchCache(getBlogId));
+                if (cachedData?.payload !== undefined) {
                     console.log("Data from cache:", cachedData);
                 } else {
-                    //    Nếu không có trong cache, gọi API và lưu vào cache
+                    // Nếu không có trong cache, gọi API và lưu vào cache
                     const data = await dispatch(getABlog(getBlogId));
-                    console.log(data);
+                    console.log("Data from API:", data);
                     // Lưu dữ liệu vào cache
                     dispatch(setCache({ key: getBlogId, value: data }));
                 }
@@ -34,8 +37,6 @@ const SingleBlog = () => {
 
         fetchData();
     }, [dispatch, getBlogId]);
-
-    const blogState = useSelector((state) => state?.blog?.singleBlog?.getBlog);
 
     return (
         <>
