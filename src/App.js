@@ -25,44 +25,44 @@ import { PrivateRoutes } from "./routing/PrivateRoutes";
 import { OpenRoutes } from "./routing/OpenRoutes";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
-import jwt_decode from "jwt-decode";
-import { useDispatch } from "react-redux";
-import { LRUCacheProvider } from "./components/lruCacheContext";
-import { authService, axiosJWT } from "./features/user/userService";
-import { getRefreshToken } from "./features/user/userSlice";
+// import jwt_decode from "jwt-decode";
+// import { useDispatch } from "react-redux";
+// import { LRUCacheProvider } from "./components/lruCacheContext";
+// import { authService, axiosJWT } from "./features/user/userService";
+// import { getRefreshToken } from "./features/user/userSlice";
 
 function App() {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const handleDecoded = () => {
-        let getTokenFromLocalStorage = localStorage.getItem("token");
-        let decodedToken =
-            getTokenFromLocalStorage && jwt_decode(getTokenFromLocalStorage);
-        return { decodedToken, getTokenFromLocalStorage };
-    };
+    // const handleDecoded = () => {
+    //     let getTokenFromLocalStorage = localStorage.getItem("token");
+    //     let decodedToken =
+    //         getTokenFromLocalStorage && jwt_decode(getTokenFromLocalStorage);
+    //     return { decodedToken, getTokenFromLocalStorage };
+    // };
 
-    useEffect(() => {
-        const currentTime = new Date();
-        const { decodedToken } = handleDecoded();
-        console.log(currentTime.getTime() / 1000);
-        if (decodedToken?.exp >= currentTime.getTime() / 1000) {
-            // dispatch(getRefreshToken());
-            // setTimeout(() => {
-            //     dispatch(getRefreshToken());
-            // }, 10000);
-        }
-    }, [dispatch]);
+    // useEffect(() => {
+    //     const currentTime = new Date();
+    //     const { decodedToken } = handleDecoded();
+    //     console.log(currentTime.getTime() / 1000);
+    //     if (decodedToken?.exp >= currentTime.getTime() / 1000) {
+    //         // dispatch(getRefreshToken());
+    //         // setTimeout(() => {
+    //         //     dispatch(getRefreshToken());
+    //         // }, 10000);
+    //     }
+    // }, [dispatch]);
 
-    authService.axiosJWT.interceptors.request.use(
-        async (config) => {
-            // config.headers.Authorization = `Bearer ${data?.accessToken}`;
+    // authService.axiosJWT.interceptors.request.use(
+    //     async (config) => {
+    //         // config.headers.Authorization = `Bearer ${data?.accessToken}`;
 
-            return config;
-        },
-        function (error) {
-            return Promise.reject(error);
-        }
-    );
+    //         return config;
+    //     },
+    //     function (error) {
+    //         return Promise.reject(error);
+    //     }
+    // );
 
     return (
         <>

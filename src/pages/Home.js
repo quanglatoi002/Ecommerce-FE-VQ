@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Marquee from "react-fast-marquee";
-import BlogCard from "../components/BlogCard";
 import ProductCard from "../components/ProductCard";
 import SpecialProduct from "../components/SpecialProduct";
 import { services } from "../utils/Data";
@@ -12,6 +11,8 @@ import moment from "moment";
 import { getAllProducts } from "../features/products/productSlice";
 import HomeInfo from "../components/HomeInfo";
 import io from "socket.io-client";
+
+const BlogCard = lazy(() => import("../components/BlogCard"));
 
 const ENDPOINT = "http://localhost:5003";
 
@@ -41,6 +42,7 @@ const Home = () => {
     const productStates = useSelector((state) => state?.productLocal?.products);
     const productState =
         productStateA.length === 0 ? productStates : productStateA;
+
     const blogState = useSelector((state) => state?.blog?.blog);
     console.log(productState);
 
@@ -372,6 +374,7 @@ const Home = () => {
                     <div className="col-12">
                         <h3 className="section-heading">Our Latest Blogs</h3>
                     </div>
+
                     <div className="row">
                         {Array.isArray(blogState) &&
                             blogState?.length > 0 &&
@@ -379,15 +382,25 @@ const Home = () => {
                                 ?.filter((i, index) => index < 4)
                                 .map((item) => (
                                     <div key={item?._id} className="col-3">
-                                        <BlogCard
-                                            id={item?._id}
-                                            title={item?.title}
-                                            description={item?.description}
-                                            image={item?.images[0]?.url}
-                                            date={moment(
-                                                item?.created_at
-                                            ).format("MMMM Do YYYY, h:mm a")}
-                                        />
+                                        <Suspense
+                                            fallback={
+                                                <div className="">
+                                                    Loading...
+                                                </div>
+                                            }
+                                        >
+                                            <BlogCard
+                                                id={item?._id}
+                                                title={item?.title}
+                                                description={item?.description}
+                                                image={item?.images[0]?.url}
+                                                date={moment(
+                                                    item?.created_at
+                                                ).format(
+                                                    "MMMM Do YYYY, h:mm a"
+                                                )}
+                                            />
+                                        </Suspense>
                                     </div>
                                 ))}
                     </div>

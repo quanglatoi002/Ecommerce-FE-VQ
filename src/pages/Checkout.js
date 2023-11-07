@@ -170,14 +170,17 @@ const Checkout = () => {
     };
 
     useEffect(() => {
+        // Cal Sum
         let sum = 0;
+        if (cartState?.length === 0) setTotalAmount(sum);
         for (let index = 0; index < cartState?.length; index++) {
             sum =
                 sum +
                 Number(cartState[index].quantity) * cartState[index].price;
             setTotalAmount(sum);
         }
-    }, [cartState]);
+    }, [cartState, dispatch]);
+
     return (
         <>
             <Container class1="checkout-wrapper py-5 home-wrapper-2">

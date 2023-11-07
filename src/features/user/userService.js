@@ -1,9 +1,6 @@
 import axios from "axios";
 import { base_url } from "../../utils/base_url";
-import { config } from "../../utils/axiosConfig";
-import { TbRuler2 } from "react-icons/tb";
-
-const axiosJWT = axios.create();
+import { config, config1 } from "../../utils/axiosConfig";
 
 const register = async (userData) => {
     const response = await axios.post(`${base_url}user/register`, userData);
@@ -11,7 +8,7 @@ const register = async (userData) => {
 };
 
 const login = async (userData) => {
-    const response = await axiosJWT.post(`${base_url}user/login`, userData);
+    const response = await axios.post(`${base_url}user/login`, userData);
     if (response?.data) {
         localStorage.setItem("customer", JSON.stringify(response.data));
     }
@@ -19,7 +16,9 @@ const login = async (userData) => {
 };
 
 const addToCart = async (cartData) => {
+    console.log(cartData);
     const response = await axios.post(`${base_url}user/cart`, cartData, config);
+    console.log(response);
     if (response?.data) return response.data;
 };
 
@@ -48,7 +47,7 @@ const createOrder = async (orderDetail) => {
     const response = await axios.post(
         `${base_url}user/cart/create-order`,
         orderDetail,
-        config
+        config1
     );
     if (response?.data) return response.data;
 };
@@ -116,5 +115,4 @@ export const authService = {
     resetPassword,
     emptyCart,
     refreshToken,
-    axiosJWT,
 };
