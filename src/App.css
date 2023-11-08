@@ -99,6 +99,20 @@ a {
     color: #131921;
     background-color: var(--color-febd69);
 }
+/* Audio */
+
+.audioCircle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: red;
+}
 
 /* Header */
 .header-top-strip {
