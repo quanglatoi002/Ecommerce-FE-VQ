@@ -10,27 +10,9 @@ import { getAllBlogs } from "../features/blogs/blogSlice";
 import moment from "moment";
 import { getAllProducts } from "../features/products/productSlice";
 import HomeInfo from "../components/HomeInfo";
-import io from "socket.io-client";
-
 const BlogCard = lazy(() => import("../components/BlogCard"));
 
-const ENDPOINT = "http://localhost:5003";
-
 const Home = () => {
-    const socket = io(ENDPOINT);
-    const [notifications, setNotifications] = useState([]);
-    useEffect(() => {
-        // Lắng nghe sự kiện "notification" từ máy chủ Redis
-        socket.on("notifications", (message) => {
-            setNotifications([...notifications, message.message]);
-        });
-
-        // Hủy đăng ký sự kiện khi component bị hủy
-        return () => {
-            socket.disconnect();
-        };
-    }, [notifications, socket]);
-
     const dispatch = useDispatch();
 
     //call API
@@ -51,13 +33,6 @@ const Home = () => {
             <Container class1="home-wrapper-1 py-5">
                 <div className="row">
                     <div className="col-lg-6 col-12">
-                        {notifications.length > 0 && (
-                            <ul>
-                                {notifications?.map((notification, index) => (
-                                    <li key={index}>{notification}</li>
-                                ))}
-                            </ul>
-                        )}
                         <div className="main-banner position-relative">
                             <img
                                 src="images/main-banner-1.jpg"

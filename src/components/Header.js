@@ -5,8 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { getAProduct } from "../features/products/productSlice";
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:5003";
 
 const Header = () => {
+    const [isShow, setIsShow] = useState(false);
+    const socket = io(ENDPOINT);
     const [paginate, setPaginate] = useState(true);
     const [totalAmount, setTotalAmount] = useState(null);
     console.log(totalAmount);
@@ -47,6 +52,24 @@ const Header = () => {
     const handleLogout = async () => {
         localStorage.clear();
         window.location.reload();
+    };
+
+    const [notifications, setNotifications] = useState([]);
+    console.log(notifications);
+    useEffect(() => {
+        // Lắng nghe sự kiện "notification" từ máy chủ Redis
+        socket.on("notifications", (message) => {
+            setNotifications([...notifications, message.message]);
+        });
+
+        // Hủy đăng ký sự kiện khi component bị hủy
+        return () => {
+            socket.disconnect();
+        };
+    }, [notifications, socket]);
+
+    const handleShow = () => {
+        setIsShow((prev) => !prev);
     };
 
     return (
@@ -130,10 +153,59 @@ const Header = () => {
                                             src="../images/wishlist.svg"
                                             alt="wishlist"
                                         />
-                                        <p className="mb-0">
+                                        <p className="mb-0 d-none d-lg-block">
                                             Favourite <br /> wishlist
                                         </p>
                                     </Link>
+                                </div>
+                                {/* Notifi */}
+                                <div
+                                    onClick={handleShow}
+                                    className="d-flex align-items-center gap-10 text-white position-relative"
+                                >
+                                    <img
+                                        className=""
+                                        src="../images/notifi.svg"
+                                        alt="notification"
+                                    />
+
+                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-white text-black">
+                                        {notifications?.length || 0}
+                                    </span>
+                                    {isShow && (
+                                        <div className="notification">
+                                            <div className="notification-up text-black">
+                                                Notification
+                                            </div>
+
+                                            <div className="notification-main text-black">
+                                                <div className="notification-content text-black">
+                                                    {notifications.length >
+                                                        0 && (
+                                                        <ul className="notification-info">
+                                                            {notifications?.map(
+                                                                (
+                                                                    notification,
+                                                                    index
+                                                                ) => (
+                                                                    <li
+                                                                        className="notification-info-li"
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            notification
+                                                                        }
+                                                                    </li>
+                                                                )
+                                                            )}
+                                                        </ul>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                                 <div>
                                     <Link
