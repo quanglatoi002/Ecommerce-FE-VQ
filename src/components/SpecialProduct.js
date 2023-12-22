@@ -24,14 +24,14 @@ const SpecialProduct = (props) => {
                         <ReactStars
                             count={5}
                             size={24}
-                            value={+totalRatings}
+                            value={+totalRatings === 0 ? 3 : +totalRatings}
                             edit={false}
                             activeColor="#ffd700"
                             className="response-stars"
                         />
                         <p className="price">
                             <span className="red-p">$ {price}</span> &nbsp;
-                            <strike>$ {sold}</strike>
+                            {/* <strike>$ {sold}</strike> */}
                         </p>
                         {/* <div className="discount-till d-flex align-items-center gap-10">
                             <p>

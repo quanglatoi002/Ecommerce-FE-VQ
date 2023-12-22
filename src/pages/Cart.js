@@ -83,7 +83,10 @@ const Cart = () => {
                                         <div className="w-25">
                                             <img
                                                 className="img-fluid"
-                                                src="../images/watch.jpg"
+                                                src={
+                                                    item?.productId.images[0]
+                                                        ?.url
+                                                }
                                                 alt="product images"
                                             />
                                         </div>

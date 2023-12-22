@@ -7,6 +7,7 @@ import Color from "../components/Color";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/products/productSlice";
+// import { getAllProducts } from "../features/bucket/bucketSlice";
 const OurStore = () => {
     const dispatch = useDispatch();
     //call API

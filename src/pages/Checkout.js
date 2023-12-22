@@ -96,78 +96,196 @@ const Checkout = () => {
         setCartProductState(items);
     }, [cartState]);
 
-    const checkOutHandler = async () => {
-        const res = await loadScript(
-            "https://checkout.razorpay.com/v1/checkout.js"
-        );
-        if (!res) {
-            alert("Razorpay SDK failed to load. Are you online?");
-            return;
+    const loadRazorpayScript = async () => {
+        try {
+            const res = await loadScript(
+                "https://checkout.razorpay.com/v1/checkout.js"
+            );
+            if (!res) {
+                throw new Error("Razorpay SDK failed to load. Are you online?");
+            }
+            return true;
+        } catch (error) {
+            console.error("Error loading Razorpay script:", error.message);
+            alert("An error occurred while loading Razorpay SDK.");
+            return false;
         }
-        //checkout
-        const result = await axios.post(
-            "http://localhost:5003/api/user/order/checkout",
-            { amount: totalAmount },
-            config
-        );
-        if (!result) {
-            alert("Server error. Are you online?");
-            return;
+    };
+
+    const performCheckout = async () => {
+        try {
+            const result = await axios.post(
+                "http://localhost:5003/api/user/order/checkout",
+                { amount: totalAmount },
+                config
+            );
+            if (!result) {
+                throw new Error("Server error. Are you online?");
+            }
+
+            // Thực hiện các công việc khác trong phần checkout...
+
+            return result.data.order;
+        } catch (error) {
+            console.error("Error during checkout:", error.message);
+            alert("An error occurred during checkout.");
+            return null;
         }
+    };
 
-        // Getting the order details back
-        const { amount, id: order_id, currency } = result.data.order;
-        const options = {
-            key: "rzp_test_OR9hf09RIN79Vg", // Enter the Key ID generated from the Dashboard
-            amount: amount,
-            currency: currency,
-            name: "VanQuang",
-            description: "Test Transaction",
-            // image: "images/watch.jpg",
-            order_id: order_id,
-            handler: async function (response) {
-                const data = {
-                    orderCreationId: order_id,
-                    razorpayPaymentId: response?.razorpay_payment_id,
-                    razorpayOrderId: response?.razorpay_order_id,
-                    razorpaySignature: response?.razorpay_signature,
-                };
-
-                const result = await axios.post(
-                    "http://localhost:5003/api/user/order/paymentVerification",
-                    data,
-                    config
-                );
-                if (result && result?.status === 200) {
-                    dispatch(
-                        createAOrder({
-                            totalPrice: totalAmount,
-                            totalPriceAfterDiscount: totalAmount,
-                            cartProductState,
-                            paymentInfo: result.data,
-                            shoppingInfo: formik.values,
-                        })
-                    );
-                    dispatch(deleteUserCard());
-                    dispatch(resetState());
-                }
-            },
-            prefill: {
-                name: "Quang",
-                email: "quanglatoi002@gmail.com",
-                contact: "0988724604",
-            },
-            notes: {
-                address: "Thuan An",
-            },
-            theme: {
-                color: "#61dafb",
-            },
+    const handlePaymentVerification = async (response, order_id) => {
+        const data = {
+            orderCreationId: order_id,
+            razorpayPaymentId: response?.razorpay_payment_id,
+            razorpayOrderId: response?.razorpay_order_id,
+            razorpaySignature: response?.razorpay_signature,
         };
 
-        const paymentObject = new window.Razorpay(options);
-        paymentObject.open();
+        try {
+            const result = await axios.post(
+                "http://localhost:5003/api/user/order/paymentVerification",
+                data,
+                config
+            );
+            if (result && result?.status === 200) {
+                // Xử lý kết quả thanh toán...
+                dispatch(
+                    createAOrder({
+                        totalPrice: totalAmount,
+                        totalPriceAfterDiscount: totalAmount,
+                        cartProductState,
+                        paymentInfo: result.data,
+                        shoppingInfo: shoppingInfo
+                            ? shoppingInfo
+                            : formik.values,
+                    })
+                );
+                dispatch(deleteUserCard());
+                dispatch(resetState());
+            }
+        } catch (error) {
+            console.error("Error during payment verification:", error.message);
+            alert("An error occurred during payment verification.");
+        }
     };
+
+    const checkOutHandler = async () => {
+        const razorpayScriptLoaded = await loadRazorpayScript();
+
+        if (!razorpayScriptLoaded) {
+            return;
+        }
+
+        const order = await performCheckout();
+
+        if (order) {
+            // Getting the order details back
+            const { amount, id: order_id, currency } = order;
+
+            const options = {
+                key: "rzp_test_OR9hf09RIN79Vg", // Enter the Key ID generated from the Dashboard
+                amount: amount,
+                currency: currency,
+                name: "VanQuang",
+                description: "Test Transaction",
+                // image: "images/watch.jpg",
+                order_id: order_id,
+                handler: async function (response) {
+                    await handlePaymentVerification(response, order_id);
+                },
+                // Các tùy chọn khác...
+                prefill: {
+                    name: "Quang",
+                    email: "quanglatoi002@gmail.com",
+                    contact: "0988724604",
+                },
+                notes: {
+                    address: "Thuan An",
+                },
+                theme: {
+                    color: "#61dafb",
+                },
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open();
+        }
+    };
+
+    // const checkOutHandler = async () => {
+    //     const res = await loadScript(
+    //         "https://checkout.razorpay.com/v1/checkout.js"
+    //     );
+    //     if (!res) {
+    //         alert("Razorpay SDK failed to load. Are you online?");
+    //         return;
+    //     }
+    //     //checkout
+    //     const result = await axios.post(
+    //         "http://localhost:5003/api/user/order/checkout",
+    //         { amount: totalAmount },
+    //         config
+    //     );
+    //     if (!result) {
+    //         alert("Server error. Are you online?");
+    //         return;
+    //     }
+
+    //     // Getting the order details back
+    //     const { amount, id: order_id, currency } = result.data.order;
+    //     const options = {
+    //         key: "rzp_test_OR9hf09RIN79Vg", // Enter the Key ID generated from the Dashboard
+    //         amount: amount,
+    //         currency: currency,
+    //         name: "VanQuang",
+    //         description: "Test Transaction",
+    //         // image: "images/watch.jpg",
+    //         order_id: order_id,
+    //         handler: async function (response) {
+    //             const data = {
+    //                 orderCreationId: order_id,
+    //                 razorpayPaymentId: response?.razorpay_payment_id,
+    //                 razorpayOrderId: response?.razorpay_order_id,
+    //                 razorpaySignature: response?.razorpay_signature,
+    //             };
+
+    //             const result = await axios.post(
+    //                 "http://localhost:5003/api/user/order/paymentVerification",
+    //                 data,
+    //                 config
+    //             );
+    //             if (result && result?.status === 200) {
+    //                 dispatch(
+    //                     createAOrder({
+    //                         totalPrice: totalAmount,
+    //                         totalPriceAfterDiscount: totalAmount,
+    //                         cartProductState,
+    //                         paymentInfo: result.data,
+    //                         shoppingInfo: shoppingInfo
+    //                             ? shoppingInfo
+    //                             : formik.values,
+    //                     })
+    //                 );
+    //                 dispatch(deleteUserCard());
+    //                 dispatch(resetState());
+    //             }
+    //         },
+    //         prefill: {
+    //             name: "Quang",
+    //             email: "quanglatoi002@gmail.com",
+    //             contact: "0988724604",
+    //         },
+    //         notes: {
+    //             address: "Thuan An",
+    //         },
+    //         theme: {
+    //             color: "#61dafb",
+    //         },
+    //     };
+
+    //     const paymentObject = new window.Razorpay(options);
+    //     paymentObject.open();
+    // };
 
     useEffect(() => {
         // Cal Sum

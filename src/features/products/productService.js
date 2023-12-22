@@ -7,8 +7,8 @@ const getProducts = async (data) => {
         `${base_url}product?${data?.brand ? `brand=${data?.brand}&&` : ""}${
             data?.tag ? `tags=${data?.tag}&&` : ""
         }${data?.category ? `category=${data?.category}&&` : ""}${
-            data?.minPrice ? `price[gte]=${data?.minPrice}&&` : ""
-        }${data?.maxPrice ? `price[lte]=${data?.maxPrice}&&` : ""}${
+            data?.minPrice ? `minPrice=${data?.minPrice}&&` : ""
+        }${data?.maxPrice ? `maxPrice=${data?.maxPrice}&&` : ""}${
             data?.sort ? `sort=${data?.sort}&&` : ""
         }
         `

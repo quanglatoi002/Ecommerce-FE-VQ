@@ -16,6 +16,7 @@ const Blog = () => {
     }, [dispatch]);
 
     const blogState = useSelector((state) => state?.blog?.blog);
+    console.log(blogState);
     return (
         <>
             <Meta title={"Blogs"} />

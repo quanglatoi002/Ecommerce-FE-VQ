@@ -93,9 +93,15 @@ const Header = () => {
                 <div className="container-xxl">
                     <div className="row align-items-center">
                         <div className="response-mobile col-2">
-                            <h2>
+                            <h2 className="m-0">
                                 <Link to={"/"} className="text-white">
-                                    Developer
+                                    <img
+                                        src="../images/logo-a.png"
+                                        alt="ecommerce"
+                                        height={60}
+                                        width={100}
+                                        style={{ objectFit: "cover" }}
+                                    ></img>
                                 </Link>
                             </h2>
                         </div>

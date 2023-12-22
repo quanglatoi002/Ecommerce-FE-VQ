@@ -44,8 +44,7 @@ const Footer = () => {
                         <div className="col-4">
                             <h4 className="text-white mb-4">Contact Us</h4>
                             <address className="text-white fs-6">
-                                Hno: 277 Near Vill chopal, <br /> Sonipat,
-                                Haryana <br /> PinCode: 131103{" "}
+                                Thuan An, Binh Duong
                             </address>
                             <Link
                                 href="tel:+84 988724604"

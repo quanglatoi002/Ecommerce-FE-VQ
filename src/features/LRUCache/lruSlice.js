@@ -9,6 +9,7 @@ export const fetchCache = createAsyncThunk(
     async (key) => {
         console.log(key);
         const cacheValue = await lruCache.get(key);
+        console.log(cacheValue);
         return cacheValue;
     }
 );

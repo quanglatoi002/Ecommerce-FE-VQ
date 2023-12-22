@@ -9,7 +9,7 @@ export const useLRUCache = () => {
 export const LRUCacheProvider = ({ children }) => {
     //sử dụng với Map()
     const [cache, setCache] = useState(new Map());
-    console.log(cache);
+    console.log("cache 12", cache);
     const maxCacheSize = 5; // sl 5
 
     const updateCache = (key, value) => {

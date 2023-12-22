@@ -48,7 +48,11 @@ const ProductCard = (props) => {
                             />
                             <img
                                 className="img-fluid mx-auto"
-                                src="../images/watch.jpg"
+                                src={
+                                    item?.images[0].url
+                                        ? item?.images[0].url
+                                        : "../images/watch.jpg"
+                                }
                                 alt="product images"
                             />
                         </div>
@@ -59,9 +63,14 @@ const ProductCard = (props) => {
                             <ReactStars
                                 count={5}
                                 size={24}
-                                value={+item?.totalRatings}
+                                value={
+                                    +item?.totalRatings
+                                        ? +item?.totalRatings
+                                        : 4
+                                }
                                 edit={false}
                                 activeColor="#ffd700"
+                                d
                             />
                             <p
                                 className={`description ${
@@ -88,13 +97,6 @@ const ProductCard = (props) => {
                                         }
                                         src="../images/view.svg"
                                         alt="view"
-                                    />
-                                </button>
-
-                                <button className="border-0 bg-transparent">
-                                    <img
-                                        src="../images/add-cart.svg"
-                                        alt="addCart"
                                     />
                                 </button>
                             </div>

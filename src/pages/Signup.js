@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BreadCrumb } from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Container from "../components/Container";
 import CustomInput from "../components/CustomInput";
 import { useFormik } from "formik";
@@ -44,7 +44,7 @@ const Signup = () => {
     });
 
     useEffect(() => {
-        if (authState.createUser !== null && authState.isError === false) {
+        if (authState.user !== null && authState.isError === false) {
             navigate("/login");
         }
     }, [authState, navigate]);

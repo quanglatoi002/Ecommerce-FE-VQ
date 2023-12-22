@@ -25,13 +25,21 @@ import { PrivateRoutes } from "./routing/PrivateRoutes";
 import { OpenRoutes } from "./routing/OpenRoutes";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
+
+import { useDispatch } from "react-redux";
 // import jwt_decode from "jwt-decode";
 // import { useDispatch } from "react-redux";
-// import { LRUCacheProvider } from "./components/lruCacheContext";
+import { LRUCacheProvider } from "./components/lruCacheContext";
 // import { authService, axiosJWT } from "./features/user/userService";
 // import { getRefreshToken } from "./features/user/userSlice";
+import { getUserProductWishList } from "../src/features/user/userSlice";
 
 function App() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getUserProductWishList());
+    }, [dispatch]);
     // const dispatch = useDispatch();
 
     // const handleDecoded = () => {
@@ -76,7 +84,15 @@ function App() {
                         <Route path="product/:id" element={<SingleProduct />} />
                         <Route path="blog" element={<Blog />} />
 
-                        <Route path="blog/:id" element={<SingleBlog />} />
+                        {/* <Route path="blog/:id" element={<SingleBlog />} /> */}
+                        <Route
+                            path="blog/:id"
+                            element={
+                                <LRUCacheProvider>
+                                    <SingleBlog />
+                                </LRUCacheProvider>
+                            }
+                        />
 
                         <Route
                             path="cart"

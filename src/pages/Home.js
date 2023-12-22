@@ -32,84 +32,61 @@ const Home = () => {
         <>
             <Container class1="home-wrapper-1 py-5">
                 <div className="row">
-                    <div className="col-lg-6 col-12">
-                        <div className="main-banner position-relative">
-                            <img
-                                src="images/main-banner-1.jpg"
-                                className="img-fluid rounded-3"
-                                alt="main banner"
-                            />
-                            <div className="main-banner-content position-absolute">
-                                <h4>SUPERCHARGE FOR PROS.</h4>
-                                <h5>iPad S13+ Pro.</h5>
-                                <p>
-                                    From $999.00 <br /> or $41.62/mo.
-                                </p>
-                                <Link className="button">
-                                    <span>BUY NOW</span>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
+                    {productState?.length > 0 &&
+                        productState
+                            ?.filter((i) => i?.tags === "Super")
+                            ?.map((item, index) => (
+                                <div className="col-lg-6 col-12 mb-2">
+                                    <div className="main-banner position-relative">
+                                        <img
+                                            src={item.images[0].url}
+                                            className="img-fluid rounded-3"
+                                            alt="main banner"
+                                        />
+                                        <div className="main-banner-content position-absolute">
+                                            <h4>{item.tags}</h4>
+                                            <h5>{item.title}</h5>
+                                            <p className="text-white">
+                                                ${item.price}
+                                            </p>
+                                            <Link
+                                                to={`/product/${item._id}`}
+                                                className="blog-button"
+                                            >
+                                                <span>View</span>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
                     <div className="col-lg-6 col-12">
                         <div className="response-pc flex d-flex flex-wrap align-items-center">
-                            <div className="small-banner position-relative">
-                                <img
-                                    src="images/catbanner-01.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="main banner"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>Best Sake.</h4>
-                                    <h5>iPad S13+ Pro.</h5>
-                                    <p>
-                                        From $999.00 <br /> or $41.62/mo.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="small-banner position-relative ">
-                                <img
-                                    src="images/catbanner-02.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="main banner"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL.</h4>
-                                    <h5>But IPad Air.</h5>
-                                    <p>
-                                        From $999.00 <br /> or $41.62/mo.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="small-banner position-relative">
-                                <img
-                                    src="images/catbanner-03.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="main banner"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL.</h4>
-                                    <h5>iPad S13+ Pro.</h5>
-                                    <p>
-                                        From $999.00 <br />
-                                        or $41.62/mo.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="small-banner position-relative">
-                                <img
-                                    src="images/catbanner-04.jpg"
-                                    className="img-fluid rounded-3"
-                                    alt="main banner"
-                                />
-                                <div className="small-banner-content position-absolute">
-                                    <h4>NEW ARRIVAL.</h4>
-                                    <h5>iPad S13+ Pro.</h5>
-                                    <p>
-                                        From $999.00 <br /> or $41.62/mo.
-                                    </p>
-                                </div>
-                            </div>
+                            {productState?.length > 0 &&
+                                productState
+                                    ?.filter((i) => i?.tags === "Sake")
+                                    ?.map((item, index) => (
+                                        <div className="small-banner position-relative">
+                                            <img
+                                                src={item.images[0].url}
+                                                className="rounded-3 img-css"
+                                                alt="main banner"
+                                            />
+                                            <div className="small-banner-content position-absolute">
+                                                <h4>{item.tags}</h4>
+                                                <h5>{item.title}</h5>
+                                                <p className="text-white">
+                                                    ${item.price}
+                                                </p>
+                                                <Link
+                                                    to={`/product/${item._id}`}
+                                                    className="blog-button"
+                                                >
+                                                    <span>View</span>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ))}
                         </div>
                     </div>
                 </div>
@@ -160,90 +137,7 @@ const Home = () => {
                             ))}
                 </div>
             </Container>
-            <Container class1="famous-wrapper py-lg-5 py-3 home-wrapper-2">
-                <div className="row">
-                    <div className="col-md-3 col-12 response-3 d-flex">
-                        <div
-                            className="famous-card d-flex
-                             position-relative"
-                        >
-                            <img
-                                src="images/famous-2.jpeg"
-                                alt="famous"
-                                className="img-fluid img-famous"
-                            />
-                            <div className="famous-content position-absolute">
-                                <h5>Big Screen</h5>
-                                <h6>Smart Watch Series 9</h6>
-                                <p>From $399 or $16.6/mo. for 24mo</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-3 response-mobile-screen">
-                        <div
-                            className="famous-card 
-                             position-relative"
-                        >
-                            <img
-                                src="images/famous-1.webp"
-                                alt="famous"
-                                className="img-fluid"
-                            />
-                            <div className="famous-content position-absolute">
-                                <h5 className="text-dark">Studio Display</h5>
-                                <h6 className="text-dark">
-                                    Smart Watch Series 9
-                                </h6>
-                                <p className="text-dark">
-                                    From $399 or $16.6/mo. for 24mo
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-3 response-mobile-screen">
-                        <div
-                            className="famous-card 
-                             position-relative"
-                        >
-                            <img
-                                src="images/famous-1.webp"
-                                alt="famous"
-                                className="img-fluid"
-                            />
-                            <div className="famous-content position-absolute">
-                                <h5 className="text-dark">Studio Display</h5>
-                                <h6 className="text-dark">
-                                    Smart Watch Series 9
-                                </h6>
-                                <p className="text-dark">
-                                    From $399 or $16.6/mo. for 24mo
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-3 response-mobile-screen">
-                        <div
-                            className="famous-card 
-                             position-relative"
-                        >
-                            <img
-                                src="images/famous-1.webp"
-                                alt="famous"
-                                className="img-fluid"
-                            />
-                            <div className="famous-content position-absolute">
-                                <h5 className="text-dark">Studio Display</h5>
-                                <h6 className="text-dark">
-                                    Smart Watch Series 9
-                                </h6>
-                                <p className="text-dark">
-                                    From $399 or $16.6/mo. for 24mo
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Container>
+
             <Container class1="special-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
