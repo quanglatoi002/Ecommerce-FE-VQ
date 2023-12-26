@@ -31,16 +31,16 @@ const Home = () => {
     return (
         <>
             <Container class1="home-wrapper-1 py-5">
-                <div className="row">
+                <div className="row gap-0-10">
                     {productState?.length > 0 &&
                         productState
                             ?.filter((i) => i?.tags === "Super")
                             ?.map((item, index) => (
-                                <div className="col-lg-6 col-12 mb-2">
-                                    <div className="main-banner position-relative">
+                                <div className="col-lg-6 col-12">
+                                    <div className="main-banner position-relative h-100">
                                         <img
                                             src={item.images[0].url}
-                                            className="img-fluid rounded-3"
+                                            className="img-fluid rounded-3 h-100"
                                             alt="main banner"
                                         />
                                         <div className="main-banner-content position-absolute">

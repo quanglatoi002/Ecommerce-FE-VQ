@@ -18,6 +18,7 @@ import {
 import { toast } from "react-toastify";
 import { addProdToCart, getUserCart } from "../features/user/userSlice";
 import { getAllBlogs } from "../features/blogs/blogSlice";
+import { addToWishList } from "../features/products/productSlice";
 
 const SingleProduct = () => {
     const [color, setColor] = useState(null);
@@ -35,6 +36,11 @@ const SingleProduct = () => {
     const productState = useSelector((state) => state?.product?.product);
     const productsState = useSelector((state) => state?.product?.products);
     const cartState = useSelector((state) => state.auth?.cartProducts);
+    // add wishlist
+    const addToWish = (id) => {
+        console.log(id);
+        dispatch(addToWishList(id));
+    };
 
     useEffect(() => {
         for (let i = 0; i < cartState?.length; i++) {
@@ -300,28 +306,22 @@ const SingleProduct = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center gap-15">
-                                    <div>
-                                        <a href="/">
-                                            <TbGitCompare className="fs-5 me-2" />
-                                            Add to Compare
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <a href="/">
-                                            <AiOutlineHeart className="fs-5  me-2" />
-                                            Add to Wishlist
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div className="d-flex gap-10 flex-colum my-3">
-                                    <h3 className="product-heading">
-                                        Shipping & Returns :
-                                    </h3>
-                                    <p className="product-data">
-                                        Lorem ipsum dolor sit, amet consectetur
-                                        adipisicing elit.{" "}
-                                    </p>
+                                    <button
+                                        onClick={(e) => {
+                                            addToWish(productState?._id);
+                                        }}
+                                        className="border-0 bg-transparent"
+                                    >
+                                        <img
+                                            src="../images/wish.svg"
+                                            alt="wishlist"
+                                            width={18}
+                                            height={18}
+                                        />
+                                    </button>
+                                    <span className="sign-wishlist">
+                                        Add wishlist
+                                    </span>
                                 </div>
                                 <div className="d-flex gap-10 align-items-center my-3">
                                     <h3 className="product-heading">

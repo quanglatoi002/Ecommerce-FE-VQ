@@ -4,6 +4,7 @@ import productReducer from "../features/products/productSlice";
 import blogReducer from "../features/blogs/blogSlice";
 import lruSlice from "../features/LRUCache/lruSlice";
 import contactReducer from "../features/contact/contactSlice";
+import couponReducer from "../features/coupon/couponSlice";
 import {
     persistReducer,
     persistStore,
@@ -33,6 +34,7 @@ export const store = configureStore({
         product: persistReducer(persistedProductsReducer, productReducer),
         blog: blogReducer,
         contact: contactReducer,
+        coupon: couponReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

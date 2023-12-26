@@ -8,7 +8,6 @@ import { addToWishList } from "../features/products/productSlice";
 
 const Wishlist = () => {
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(getUserProductWishList());
     }, [dispatch]);
@@ -22,6 +21,7 @@ const Wishlist = () => {
             dispatch(getUserProductWishList());
         }, 50);
     };
+
     return (
         <>
             <Meta title={"Wishlist"} />

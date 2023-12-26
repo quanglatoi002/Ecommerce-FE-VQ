@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import Container from "../components/Container";
@@ -12,6 +12,7 @@ import {
     deleteUserCard,
     resetState,
 } from "../features/user/userSlice";
+import { getACoupon } from "../features/coupon/couponSlice";
 
 let shippingSchema = yup.object({
     firstName: yup.string().required("First Name is Required"),
@@ -30,6 +31,13 @@ const Checkout = () => {
     const [totalAmount, setTotalAmount] = useState(null);
     const [shoppingInfo, setShoppingInfo] = useState(null);
     const [cartProductState, setCartProductState] = useState([]);
+    const [couponCode, setCouponCode] = useState("");
+    const couponState = useSelector((state) => state?.coupon?.coupon);
+
+    //coupon
+    const applyCoupon = useCallback(() => {
+        dispatch(getACoupon(couponCode));
+    }, [dispatch, couponCode]);
 
     const cartState = useSelector((state) => state?.auth?.cartProducts);
     console.log(cartProductState);
@@ -295,9 +303,12 @@ const Checkout = () => {
             sum =
                 sum +
                 Number(cartState[index].quantity) * cartState[index].price;
+            if (couponState?.discount) {
+                sum = sum - sum * (couponState.discount / 100);
+            }
             setTotalAmount(sum);
         }
-    }, [cartState, dispatch]);
+    }, [cartState, couponState.discount, dispatch]);
 
     return (
         <>
@@ -534,9 +545,15 @@ const Checkout = () => {
                                                 <h5 className="total-price">
                                                     {item?.productId?.title}
                                                 </h5>
-                                                <p className="total-price">
-                                                    {item?.color?.title}
-                                                </p>
+                                                <ul className="colors ps-0">
+                                                    <li
+                                                        style={{
+                                                            backgroundColor:
+                                                                item?.color
+                                                                    ?.title,
+                                                        }}
+                                                    ></li>
+                                                </ul>
                                             </div>
                                         </div>
                                         <div className="flex-grow-1">
@@ -558,10 +575,23 @@ const Checkout = () => {
                                 <p className="mb-0 total">Shipping</p>
                                 <p className="mb-0 total-price">$ 5</p>
                             </div>
+
+                            <div className="coupon-section">
+                                <p className="mb-0 total">Voucher</p>
+                                <input
+                                    type="text"
+                                    id="couponInput"
+                                    value={couponCode}
+                                    onChange={(e) =>
+                                        setCouponCode(e.target.value)
+                                    }
+                                />
+                                <button onClick={applyCoupon}>Apply</button>
+                            </div>
                             <div className="d-flex justify-content-between align-items-center">
                                 <h4 className="total">Total</h4>
                                 <h5 className="total-price">
-                                    $ {totalAmount ? totalAmount + 5 : "0"}
+                                    ${totalAmount ? totalAmount + 5 : "0"}
                                 </h5>
                             </div>
                         </div>
