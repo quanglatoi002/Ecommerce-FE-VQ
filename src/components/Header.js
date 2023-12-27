@@ -10,6 +10,7 @@ import io from "socket.io-client";
 const ENDPOINT = "http://localhost:5003";
 
 const Header = () => {
+    const [categoryItems, setCategoryItems] = useState([]);
     const [isShow, setIsShow] = useState(false);
     const socket = io(ENDPOINT);
     const [paginate, setPaginate] = useState(true);
@@ -25,6 +26,13 @@ const Header = () => {
     console.log(userCartState);
     const authState = useSelector((state) => state?.auth);
     const productState = useSelector((state) => state?.product?.products);
+
+    useEffect(() => {
+        const category = productState?.map((item, index) => item.category);
+        const uniqueCategories = [...new Set(category)];
+
+        setCategoryItems(uniqueCategories);
+    }, [productState]);
 
     // const options = productOpt(0, 1000).map((o) => `Item ${o}`);
 
@@ -291,30 +299,16 @@ const Header = () => {
                                             className="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                         >
-                                            <li>
-                                                <Link
-                                                    className="dropdown-item text-white"
-                                                    to="#"
-                                                >
-                                                    Action
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    className="dropdown-item text-white"
-                                                    to="#"
-                                                >
-                                                    Another action
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    className="dropdown-item text-white"
-                                                    to="#"
-                                                >
-                                                    Something else here
-                                                </Link>
-                                            </li>
+                                            {categoryItems?.map((item) => (
+                                                <li>
+                                                    <Link
+                                                        className="dropdown-item text-white"
+                                                        to={`/product?category=${item}&&`}
+                                                    >
+                                                        {item}
+                                                    </Link>
+                                                </li>
+                                            ))}
                                         </ul>
                                     </div>
                                 </div>

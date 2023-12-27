@@ -24,6 +24,18 @@ const OurStore = () => {
         dispatch(getAllProducts({ category: categoryParam }));
     }, [categoryParam, dispatch]);
 
+    // cuộn lên đầu trang
+    useEffect(() => {
+        const targetPosition = document
+            .getElementById("scrollTo")
+            .getBoundingClientRect();
+        window.scrollTo({
+            top: targetPosition.top,
+            left: 0,
+            behavior: "smooth",
+        });
+    }, []);
+
     //call API
     const productState = useSelector((state) => state?.product?.products);
     const [brands, setBrands] = useState([]);
@@ -335,7 +347,10 @@ const OurStore = () => {
                             </div>
                         </div>
                         <div className="products-list pb-5">
-                            <div className="d-flex gap-lg-10 flex-wrap gap-12">
+                            <div
+                                id="scrollTo"
+                                className="d-flex gap-lg-10 flex-wrap gap-12"
+                            >
                                 <ProductCard
                                     data={productState ? productState : []}
                                     grid={grid}
