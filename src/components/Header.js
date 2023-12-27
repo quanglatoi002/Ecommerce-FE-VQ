@@ -25,6 +25,7 @@ const Header = () => {
     const userCartState = useSelector((state) => state?.auth?.cartProducts);
     console.log(userCartState);
     const authState = useSelector((state) => state?.auth);
+    console.log(authState);
     const productState = useSelector((state) => state?.product?.products);
 
     useEffect(() => {
@@ -299,16 +300,18 @@ const Header = () => {
                                             className="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton1"
                                         >
-                                            {categoryItems?.map((item) => (
-                                                <li>
-                                                    <Link
-                                                        className="dropdown-item text-white"
-                                                        to={`/product?category=${item}&&`}
-                                                    >
-                                                        {item}
-                                                    </Link>
-                                                </li>
-                                            ))}
+                                            {categoryItems?.map(
+                                                (item, index) => (
+                                                    <li key={index}>
+                                                        <Link
+                                                            className="dropdown-item text-white"
+                                                            to={`/product?category=${item}&&`}
+                                                        >
+                                                            {item}
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            )}
                                         </ul>
                                     </div>
                                 </div>
@@ -323,14 +326,15 @@ const Header = () => {
                                         </NavLink>
                                         <NavLink to="/blog">Blogs</NavLink>
                                         <NavLink to="/contact">Contact</NavLink>
-
-                                        <button
-                                            onClick={handleLogout}
-                                            className="border border-0 bg-transparent text-white text-uppercase"
-                                            type="button"
-                                        >
-                                            Logout
-                                        </button>
+                                        {authState?.isSuccess && (
+                                            <button
+                                                onClick={handleLogout}
+                                                className="border border-0 bg-transparent text-white text-uppercase"
+                                                type="button"
+                                            >
+                                                Logout
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

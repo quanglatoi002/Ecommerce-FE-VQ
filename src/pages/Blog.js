@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BreadCrumb } from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import BlogCard from "../components/BlogCard";
@@ -8,6 +8,8 @@ import { getAllBlogs } from "../features/blogs/blogSlice";
 import moment from "moment";
 
 const Blog = () => {
+    const [categoryItems, setCategoryItems] = useState([]);
+
     const dispatch = useDispatch();
 
     //call API
@@ -16,7 +18,13 @@ const Blog = () => {
     }, [dispatch]);
 
     const blogState = useSelector((state) => state?.blog?.blog);
-    console.log(blogState);
+    //tại vì item.category là 1 mảng các phần tử ["IT", "tech", "blog"]
+    useEffect(() => {
+        const category = blogState?.map((item, index) => item.category);
+        const uniqueCategories = [...new Set(category)];
+        setCategoryItems(uniqueCategories);
+    }, [blogState]);
+
     return (
         <>
             <Meta title={"Blogs"} />
@@ -28,10 +36,9 @@ const Blog = () => {
                             <h3 className="filter-title">Shop By Categories</h3>
                             <div>
                                 <ul className="ps-0">
-                                    <li>Watch</li>
-                                    <li>Tv</li>
-                                    <li>Camera</li>
-                                    <li>Laptop</li>
+                                    {categoryItems?.map((category, index) => (
+                                        <li key={index}>{category}</li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>
