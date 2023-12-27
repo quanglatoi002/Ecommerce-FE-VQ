@@ -1249,3 +1249,16 @@ footer .input-group-text {
     gap: 10px;
     margin: 10px 0;
 }
+
+.header-blog {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.blog-view {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    width: 51px;
+}

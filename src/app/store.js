@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import authReducer from "../features/user/userSlice";
 import productReducer from "../features/products/productSlice";
 import blogReducer from "../features/blogs/blogSlice";
@@ -35,6 +35,7 @@ export const store = configureStore({
         blog: blogReducer,
         contact: contactReducer,
         coupon: couponReducer,
+        middleware: [...getDefaultMiddleware()],
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

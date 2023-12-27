@@ -36,7 +36,7 @@ const Home = () => {
                         productState
                             ?.filter((i) => i?.tags === "Super")
                             ?.map((item, index) => (
-                                <div className="col-lg-6 col-12">
+                                <div key={index} className="col-lg-6 col-12">
                                     <div className="main-banner position-relative h-100">
                                         <img
                                             src={item.images[0].url}
@@ -66,7 +66,10 @@ const Home = () => {
                                 productState
                                     ?.filter((i) => i?.tags === "Sake")
                                     ?.map((item, index) => (
-                                        <div className="small-banner position-relative">
+                                        <div
+                                            key={index}
+                                            className="small-banner position-relative"
+                                        >
                                             <img
                                                 src={item.images[0].url}
                                                 className="rounded-3 img-css"
@@ -113,7 +116,7 @@ const Home = () => {
                     </div>
                 </div>
             </Container>
-            <HomeInfo />
+            <HomeInfo data={productState} />
             <Container class1="featured-wrapper py-lg-5 py-3 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">

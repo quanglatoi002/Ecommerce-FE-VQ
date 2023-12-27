@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BreadCrumb } from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { Link, useLocation } from "react-router-dom";
@@ -9,11 +9,14 @@ import { getABlog } from "../features/blogs/blogSlice";
 import { fetchCache, setCache } from "../features/LRUCache/lruSlice";
 
 const SingleBlog = () => {
+    const [getBlog, setGetBlog] = useState("");
     const dispatch = useDispatch();
     const location = useLocation();
     const getBlogId = location.pathname.split("/")[2];
     console.log(getBlogId);
-    const blogState = useSelector((state) => state?.lruCache?.payload?.getBlog);
+    const blogState = useSelector(
+        (state) => state?.lruCache?.payload?.getBlog ?? getBlog
+    );
 
     //call API
     useEffect(() => {
@@ -26,6 +29,7 @@ const SingleBlog = () => {
                 } else {
                     // Nếu không có trong cache, gọi API và lưu vào cache
                     const data = await dispatch(getABlog(getBlogId));
+                    await setGetBlog(data);
                     console.log("Data from API:", data);
                     // Lưu dữ liệu vào cache
                     dispatch(setCache({ key: getBlogId, value: data }));
@@ -53,12 +57,17 @@ const SingleBlog = () => {
                                 <HiOutlineArrowLeft className="fs-4" />
                                 Back to blog
                             </Link>
-                            <h3 className="title">{blogState?.title}</h3>
+                            <div className="header-blog">
+                                <h3 className="title">{blogState?.title}</h3>
+                                <div className="blog-view">
+                                    {`View: ${blogState?.numViews}`}
+                                </div>
+                            </div>
 
                             <img
                                 src={
-                                    blogState?.image
-                                        ? blogState?.image
+                                    blogState?.images
+                                        ? blogState?.images[0].url
                                         : "../images/blog-1.jpg"
                                 }
                                 alt="blog"

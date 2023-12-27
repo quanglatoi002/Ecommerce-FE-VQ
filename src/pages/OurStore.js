@@ -7,9 +7,23 @@ import Color from "../components/Color";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/products/productSlice";
+import { useLocation } from "react-router-dom";
 // import { getAllProducts } from "../features/bucket/bucketSlice";
 const OurStore = () => {
     const dispatch = useDispatch();
+
+    // lấy info
+    const location = useLocation();
+    // URLSearchParams giúp làm việc với query parameters
+    const queryParams = new URLSearchParams(location.search);
+    // lấy ra value của queryParams
+    const categoryParam = queryParams.get("category");
+    console.log({ categoryParam });
+
+    useEffect(() => {
+        dispatch(getAllProducts({ category: categoryParam }));
+    }, [categoryParam, dispatch]);
+
     //call API
     const productState = useSelector((state) => state?.product?.products);
     const [brands, setBrands] = useState([]);
@@ -61,10 +75,28 @@ const OurStore = () => {
     }, [productState]);
 
     useEffect(() => {
-        dispatch(
-            getAllProducts({ sort, tag, brand, category, minPrice, maxPrice })
-        );
-    }, [brand, category, dispatch, maxPrice, minPrice, sort, tag]);
+        if (!categoryParam) {
+            dispatch(
+                getAllProducts({
+                    sort,
+                    tag,
+                    brand,
+                    category,
+                    minPrice,
+                    maxPrice,
+                })
+            );
+        }
+    }, [
+        brand,
+        category,
+        categoryParam,
+        dispatch,
+        maxPrice,
+        minPrice,
+        sort,
+        tag,
+    ]);
 
     return (
         <>
