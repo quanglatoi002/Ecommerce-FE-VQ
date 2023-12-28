@@ -17,6 +17,8 @@ const Cart = () => {
         JSON.parse(localStorage.getItem("productUpdateDetail")) || null
     );
 
+    console.log("productUpdateDetail", productUpdateDetail);
+
     const [totalAmount, setTotalAmount] = useState(null);
 
     //take api => store
@@ -26,6 +28,7 @@ const Cart = () => {
     useEffect(() => {
         dispatch(getUserCart());
     }, [dispatch]);
+
     // call api
     useEffect(() => {
         // Cal Sum
@@ -84,7 +87,7 @@ const Cart = () => {
                                             <img
                                                 className="img-fluid"
                                                 src={
-                                                    item?.productId.images[0]
+                                                    item?.productId?.images[0]
                                                         ?.url
                                                 }
                                                 alt="product images"
@@ -130,7 +133,7 @@ const Cart = () => {
                                                     setProductUpdateDetail({
                                                         cartItemId: item?._id,
                                                         quantity:
-                                                            e.target.value,
+                                                            e.target?.value,
                                                     });
                                                 }}
                                             />

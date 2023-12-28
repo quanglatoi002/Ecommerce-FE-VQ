@@ -5,6 +5,7 @@ import BlogCard from "../components/BlogCard";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBlogs } from "../features/blogs/blogSlice";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
 const Blog = () => {
@@ -37,7 +38,11 @@ const Blog = () => {
                             <div>
                                 <ul className="ps-0">
                                     {categoryItems?.map((category, index) => (
-                                        <li key={index}>{category}</li>
+                                        <Link
+                                            to={`/blog?category=${category}&&`}
+                                        >
+                                            <li key={index}>{category}</li>
+                                        </Link>
                                     ))}
                                 </ul>
                             </div>

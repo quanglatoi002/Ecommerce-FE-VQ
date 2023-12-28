@@ -51,7 +51,7 @@ const Orders = () => {
                         {orderState &&
                             orderState?.map((item) => (
                                 <div
-                                    style={{ backgroundColor: "#febd69" }}
+                                    style={{ backgroundColor: "#FFFFFF" }}
                                     key={item?._id}
                                     className="row pt-3 my-3"
                                 >
@@ -71,7 +71,7 @@ const Orders = () => {
                                         <div
                                             className="row py-3"
                                             style={{
-                                                backgroundColor: "#232f3e",
+                                                backgroundColor: "#3B4149",
                                             }}
                                         >
                                             <div className="col-3">

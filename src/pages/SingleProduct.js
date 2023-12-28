@@ -128,6 +128,19 @@ const SingleProduct = () => {
         document.execCommand("copy");
         textField.remove();
     };
+
+    //scroll to
+    useEffect(() => {
+        const targetPosition = document
+            .getElementById("scrollTo")
+            .getBoundingClientRect();
+        window.scrollTo({
+            top: targetPosition.top,
+            left: 0,
+            behavior: "smooth",
+        });
+    }, []);
+
     return (
         <>
             <Meta title={"Product Name"} />
@@ -152,7 +165,7 @@ const SingleProduct = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="col-6">
+                    <div id="scrollTo" className="col-6">
                         <div className="main-product-details">
                             <div className="border-bottom">
                                 <h3 className="title">{productState?.title}</h3>
